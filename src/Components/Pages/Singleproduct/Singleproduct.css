@@ -1,0 +1,239 @@
+.detail-div {
+   padding: 10px;
+  }
+  
+  #button-size{
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    padding:12px 35px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+        
+  }
+
+  
+  .order-btn{
+    background-color: #F7941D;
+    padding: 15px;
+    border-radius: 5px;
+    width: 150px;
+    border: none;
+    color: white;
+    margin-top: 15px;
+    margin-right: 10px;
+  }
+  
+  .order-btn:hover{
+    background-color:#F7941D;
+  }
+  .order-btn-2{
+    padding: 10px;
+    border-radius: 5px;
+    width: 150px;
+    border: 1px solid  #F7941D;
+    color: black;
+    margin-top: 15px;
+    background-color: transparent;
+    margin-right: 10px;
+  }
+  
+  @media (max-width: 700px) {
+    .single-product-detail-main-div{
+        flex-direction: column;
+        height: 850px;
+        
+    }
+    .single-product-image {
+        width: 100%;
+        height: 250px;
+    }
+    .single-product-image img{
+        transform: scale(0.5);
+    }
+    
+    .detail-div{
+        width: 100%;
+        height: 600px;
+    }
+    }
+  .singlefooterimage{
+        height: 60px;
+        padding: 15px;
+        border-radius: 50%;
+        background-color: #F3F3F3;
+    }
+  
+    /* Define your CSS styles for larger screens */
+  .footer-container {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+    @media (max-width: 768px) {
+        .footer-container {
+            margin: 20px 0px 20px 0px;
+          flex-direction: column;
+          align-items: center;
+        }
+        .footer-item{
+            margin-bottom: 20px;
+        }
+      }
+  
+  .description-text{
+    text-align: left;
+  }
+  .single-product-container{
+    width: 90%;
+    margin: auto;
+    justify-content: space-between;
+    border: 1px solid white;
+    height: 660px;
+    margin-top: 20px;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .single-product-container{
+      height: 1350px !important;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .single-product-container{
+      height: auto;
+    }
+  }
+  @media screen and (max-width: 1120px) {
+    .single-product-container{
+      margin-top: 40px !important;
+      height: auto;
+  
+    }
+  
+  }
+  
+  .size-button:hover{
+    color:white;
+    background-color: #F7941D;
+  
+  }
+  .size-button-medium:hover{
+    color:black;
+    background-color: #F3F3F3;
+  
+  }
+  .active{
+    background-color:#F7941D;
+    color:white;
+    }
+  .size-button-medium{
+    color:white;
+    background-color: #F7941D;
+  }
+  .checkbox-container {
+    display: flex;
+  }
+  
+  .container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 25px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container input {
+    position: absolute;
+    padding: 10px;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+   padding: 20px;
+    border-radius: 5px;
+  }
+  
+  /* Red checkboxes */
+  .container.red .checkmark {
+    background-color: #FF0000;
+  }
+  
+  /* Pink checkboxes */
+  .container.pink .checkmark {
+    background-color: #000000;
+  }
+ /* green checkboxes */
+ .container.gray.checkmark {
+  background:gray;
+}
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 15px;
+    top: 10px;
+    width: 5px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+ .carouselContent > .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #BEB2B2;
+    border-radius: 15px;
+    height: 30rem;
+  }
+ .carouselContent > .content > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+  }
+  .carouselContent{
+     gap: 1rem;
+  }
+ .carouselContent > .slideContainer{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+   .carouselContent > .slideContainer > .slideTo > img {
+    padding-top: 10px;
+    width: 100%;
+     height: 7rem;
+   
+  }
+  
+
+
+
