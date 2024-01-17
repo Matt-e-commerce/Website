@@ -4,17 +4,17 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useDispatch, useSelector } from 'react-redux';
-import { UpdateCurrentPage } from '../../../../Store/Slices/ProductSlice';
+// import { UpdateCurrentPage } from '../../../../redux/Slices/ProductSlice';
 
 const Paginationcomp = () => {
   const { loading, totalProducts, currentPage } = useSelector(state => state.products);
   const dispatch = useDispatch();
   const ProductPerPage = 12;
 
-  const handleChange = (event, value) => {
-    console.log(value);
-    dispatch(UpdateCurrentPage(value));
-  };
+  // const handleChange = (event, value) => {
+  //   console.log(value);
+  //   dispatch(UpdateCurrentPage(value));
+  // };
 
   return (
     <Box sx={{ marginTop: '20px', display: 'flex', justifyContent: 'center', paddingX: { md: '0', sm: '0', xs: '20px' } }}>
@@ -25,7 +25,7 @@ const Paginationcomp = () => {
         size="large"
         color="primary"
         page={currentPage} // Specify the active page
-        onChange={handleChange}
+        // onChange={handleChange}
         renderItem={(item) => (
           <PaginationItem
             {...item}

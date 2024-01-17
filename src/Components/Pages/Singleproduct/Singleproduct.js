@@ -12,7 +12,7 @@ import pinkimage from "../../images/pinkimage.png";
 import { useParams } from "react-router-dom";
 import productData from "../../data/productsData";
 import { useDispatch } from "react-redux";
-import { CartActions } from "../../../Store/Slices/cartSlice";
+import { CartActions } from "../../../redux/Slices/cartSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Layout from "../../Layout/Layout";
 
@@ -72,9 +72,9 @@ const Carousel = () => {
                 return (
                   i === current &&
                   (i === 2 ? (
-                    <img src={v.image} alt=""/>
+                    <img src={v.image} key={i} alt=""/>
                   ) : (
-                    <img src={v.image} alt=""/>
+                    <img src={v.image} key={i} alt=""/>
                   ))
                 );
               })}
@@ -82,7 +82,7 @@ const Carousel = () => {
             <div className="slideContainer">
               {data.map((v, i) => {
                 return (
-                  <div className="slideTo">
+                  <div className="slideTo" key={i}>
                     <img src={v.image} alt="" onClick={() => slideTo(i)} />
                   </div>
                 );
