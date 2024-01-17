@@ -6,7 +6,6 @@ import {
   Button,
   Grid,
   Card
-
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import theme from "../../Theme/Theme";
@@ -68,7 +67,7 @@ const Changepassword = () => {
     <ThemeProvider theme={theme}>
       <Layout>
       <Box>
-        <Grid container sx={{marginTop:{md: "50px", sm: "40px", xs: "20px" },paddingX: {md: '30px', sm: '20px', xs: '10px'}}}>
+        <Grid container sx={{marginTop:{md: "50px",sm:"40px",xs:"20px" },paddingX: {md: '30px', sm: '20px', xs: '10px'}}}>
           <Grid
             item
             lg={3}
@@ -83,7 +82,7 @@ const Changepassword = () => {
             md={12}
             sm={12}
             xs={11} >
-            <Grid container sx={{paddingX: {md: '55px', sm: '30px', xs: '20px' }}}>
+            <Grid container sx={{paddingX: {md:'55px', sm: '30px', xs: '20px' }}}>
               <Grid item lg={8} md={12} sm={12} xs={12}   >
                 <Card
                   sx={{
@@ -102,7 +101,7 @@ const Changepassword = () => {
                           fontWeight: "600",
                           lineHeight: { md: "40.12px", sm: "50px", xs: "40px" },
                           fontSize: { md: "40px", sm: "30px", xs: "20px" },
-                          textAlign: { md: "start", sm: "start", xs: "center" }
+                          textAlign: { md: "start", sm: "start", xs: "center"}
                         }}>
                         Change Password
                       </Typography>
@@ -166,46 +165,43 @@ const Changepassword = () => {
                                 {passwordValues.showPassword ? (
                                   <VisibilityOffIcon sx={{ color: '#757575' }} />
                                 ) : (
-                                  <VisibilityIcon sx={{ color: '#757575' }} />
+                                  <VisibilityIcon sx={{ color:'#757575'}} />
                                 )}
                               </IconButton>
                             </InputAdornment>
                           ),
                         }}
                       />
-
-
-                      <br />
-                      <br />
-                      <br />
+                      <br/>
+                      <br/>
+                      <br/>
                       <TextField
                         required
                         fullWidth
-                        type="password"
+                        name="password"
+                        value={passwordValues.password}
+                        type={passwordValues.showPassword ? 'text' : 'password'}
                         size="large"
-                        label="Again Password"
-                        placeholder="Enter Password"
-                        sx={{ marginTop: { md: '0', sm: '30px', xs: '20px' } }}
+                        label=" Again Password"
+                        placeholder="Password"
+                        onChange={HandleInput}
                         InputProps={{
                           startAdornment: (
-                            <LockIcon
-                              style={{
-                                marginRight: "8px", // Adjust the spacing as needed
-                              }}
-                            />
+                            <InputAdornment position="start">
+                              <LockIcon sx={{ color: '#757575', fontSize: '18px' }} />
+                            </InputAdornment>
                           ),
-                          style: {
-                            borderRadius: '12px',
-
-                            fontWeight: "500",
-                            fontSize: "14px",
-                          },
-                        }}
-                        InputLabelProps={{
-                          style: {
-                            fontSize: "14px",
-                            // Add other label text styles as needed
-                          },
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton onClick={() => TogglePasswordVisibility('password')} edge="end">
+                                {passwordValues.showPassword ? (
+                                  <VisibilityOffIcon sx={{ color: '#757575' }} />
+                                ) : (
+                                  <VisibilityIcon sx={{ color:'#757575'}} />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
                         }}
                       />
                     </Grid>
