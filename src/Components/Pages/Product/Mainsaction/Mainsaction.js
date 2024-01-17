@@ -15,7 +15,7 @@ import Featuredcategories2 from "../../../Featuredcategory/Featuredcategory";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Callsupport from "../../../Callsupport/Callsupport";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchProducts } from "../../../../Store/Slices/ProductSlice";
+import { FetchProducts } from "../../../../redux/Slices/ProductSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 import Modal from '@mui/material/Modal';
@@ -37,6 +37,7 @@ const style = {
 };
 const About = () => {
   const {loading,products,currentPage}=useSelector(state=>state.products);
+  console.log(products,"products")
   const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);

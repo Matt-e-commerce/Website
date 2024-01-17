@@ -129,8 +129,8 @@ function Header() {
      <Divider />
       <List>
       <img src={Logo} style={{ width: "100%" }} />
-         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+         {navItems?.map((item) => (
+          <ListItem key={item?.id} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
               <ListItemText primary={item} />
             </ListItemButton>
