@@ -21,9 +21,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-
+import { signUpAsync, resetState } from "../../../redux/Slices/authSlice";
 import Layout from "../../Layout/Layout";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Signup = () => {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -31,12 +32,28 @@ const Signup = () => {
     register,
     handleSubmit,
     watch,
+    reset, // Destructure the reset function from react-hook-for
     formState: { errors },
   } = useForm();
-
   const onSubmit = async (data) => {
-    // Handle form submission here
-    console.log(data);
+    try {
+      const response = await dispatch(signUpAsync(data));
+      
+      if (response?.type === "auth/signUp/fulfilled") {
+        // Display success toast
+        toast.success("Signup successful!");
+         // Reset the form values
+        reset()
+      } else {
+        // Display error toast with backend error message
+        toast.error(
+          `Signup failed. Please try again. ${response?.error?.message}`
+        );
+      }
+    } catch (error) {
+      // Handle other errors
+      toast.error(`An error occurred. Please try again. ${error.message}`);
+    }
   };
 
   const spacing = {
@@ -49,11 +66,11 @@ const Signup = () => {
   };
   return (
     <div>
-        <Card sx={Signupstyle.cardstyle}>
-          <Typography variant="subtitle1" sx={Signupstyle.Signupheading}>
-            Sign up
-          </Typography>
-      <form  onSubmit={handleSubmit(onSubmit)}>
+      <Card sx={Signupstyle.cardstyle}>
+        <Typography variant="subtitle1" sx={Signupstyle.Signupheading}>
+          Sign up
+        </Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Box noValidate sx={{ mt: 3 }}>
             <Grid container spacing={spacing}>
               <Grid item md={6} xs={12} sm={12}>
@@ -288,8 +305,9 @@ const Signup = () => {
               Register Me
             </Button>
           </Box>
-      </form>
-        </Card>
+        </form>
+        <ToastContainer />
+      </Card>
     </div>
   );
 };
