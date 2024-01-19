@@ -39,3 +39,21 @@ export const updatePassword = async (userData) => {
     throw error.response.data;
   }
 };
+export const verify = async (userData) => {
+  
+  try {
+    const response = await axios.post(`${POST_URL}/api/auth/user/userAccontVerification`, userData);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const resendOtp = async (userData) => {
+  
+  try {
+    const response = await axios.post(`${POST_URL}/api/auth/user/userResendOtp`, userData);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

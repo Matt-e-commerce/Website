@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { signIn, signUp,forgetPassword ,updatePassword} from "../features/auth";
+import { signIn, signUp,forgetPassword ,updatePassword,verify,resendOtp} from "../features/auth";
 
 export const signUpAsync = createAsyncThunk("auth/signUp", async (userData) => {
     const response = await signUp(userData);
@@ -15,8 +15,16 @@ export const signUpAsync = createAsyncThunk("auth/signUp", async (userData) => {
     const response = await forgetPassword(userData);
     return response.data; // Assuming your API returns data
   });
-  export const updatePasswordAsync = createAsyncThunk("auth/updatePassword", async (userData,token) => {
+  export const updatePasswordAsync = createAsyncThunk("auth/updatePassword", async (userData) => {
     const response = await updatePassword(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const verifyAsync = createAsyncThunk("auth/verify", async (userData) => {
+    const response = await verify(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const resendOtpAsync = createAsyncThunk("auth/resendOtp", async (userData) => {
+    const response = await resendOtp(userData);
     return response.data; // Assuming your API returns data
   });
 // Create a slice of the Redux store

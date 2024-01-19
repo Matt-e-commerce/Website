@@ -25,6 +25,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import Layout from "../../Layout/Layout";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import {signInAsync} from "../../../redux/Slices/authSlice"
@@ -37,10 +38,12 @@ const Login = () => {
     md: 4, // Spacing for medium screens
   };
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
   } = useForm();
@@ -51,6 +54,8 @@ const Login = () => {
       if (response?.type === "auth/signIn/fulfilled") {
         // Display success toast
         toast.success("Signin successfully!");
+        reset()
+        navigate('/home')
       } else {
         // Display error toast with backend error message
       toast.error(`Signin failed. Please try again. ${response?.error?.message}`);

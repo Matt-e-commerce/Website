@@ -18,7 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { signUpAsync, resetState } from "../../../redux/Slices/authSlice";
@@ -27,6 +27,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const Signup = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -44,6 +45,8 @@ const Signup = () => {
         toast.success("Signup successfully!");
          // Reset the form values
         reset()
+        // Redirect to securitypage
+        navigate("/securitypage");
       } else {
         // Display error toast with backend error message
         toast.error(
