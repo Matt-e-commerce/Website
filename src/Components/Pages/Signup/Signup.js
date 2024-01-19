@@ -41,7 +41,7 @@ const Signup = () => {
       
       if (response?.type === "auth/signUp/fulfilled") {
         // Display success toast
-        toast.success("Signup successful!");
+        toast.success("Signup successfully!");
          // Reset the form values
         reset()
       } else {

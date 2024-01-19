@@ -50,7 +50,7 @@ const Login = () => {
       const response = await dispatch(signInAsync(data))
       if (response?.type === "auth/signIn/fulfilled") {
         // Display success toast
-        toast.success("Signin successful!");
+        toast.success("Signin successfully!");
       } else {
         // Display error toast with backend error message
       toast.error(`Signin failed. Please try again. ${response?.error?.message}`);
