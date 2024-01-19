@@ -25,6 +25,9 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.userInfo = null;
     },
+    resetState: (state) => {
+      state.userInfo = null;
+    },
     signUpSuccess: (state, action) => {
       state.userInfo = action.payload; // Ensure that it updates the entire user object
     },
@@ -47,7 +50,7 @@ const authSlice = createSlice({
       })
       .addCase(signInAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.auth = action.payload;
+        state.userInfo = action.payload;
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
@@ -57,5 +60,5 @@ const authSlice = createSlice({
 });
 
 // Export the reducer and action creators
-export const { logout } = authSlice.actions;
+export const { logout,resetState } = authSlice.actions;
 export default authSlice.reducer;
