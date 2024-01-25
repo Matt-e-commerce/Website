@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -23,20 +23,43 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-// import { signUpAsync, resetState } from "../../../redux/Slices/authSlice";
+import {
+  profileSetupAsync,
+  getUserAsync,
+} from "../../../redux/Slices/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../Layout/Layout";
 
 const Sidebar = () => {
+  const [userInfo, setUserInfo] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     reset, // Destructure the reset function from react-hook-for
     formState: { errors },
   } = useForm();
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await dispatch(getUserAsync());
+      setUserInfo(user?.payload);
+
+      // Set default values for the form fields
+      Object.keys(user?.payload).forEach((key) => {
+        setValue(key, user?.payload[key]);
+      });
+    };
+    fetchData();
+  }, [dispatch, setValue]);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file, "file===> ");
+    setSelectedFile(file);
+  };
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const spacing = {
@@ -45,22 +68,25 @@ const Sidebar = () => {
     md: 4, // Spacing for medium screens
   };
   const onSubmit = async (data) => {
+    console.log(selectedFile, "selectedFile===> in the on submit");
+    const userData = {
+      ...data,
+      profilePic: selectedFile,
+    };
     try {
-      // const response = await dispatch(signUpAsync(data));
-      
-      // if (response?.type === "auth/signUp/fulfilled") {
-      //   // Display success toast
-      //   toast.success("Signup successfully!");
-      //    // Reset the form values
-      //   reset()
-      //   // Redirect to securitypage
-      //   navigate("/securitypage");
-      // } else {
-      //   // Display error toast with backend error message
-      //   toast.error(
-      //     `Signup failed. Please try again. ${response?.error?.message}`
-      //   );
-      // }
+      const response = await dispatch(profileSetupAsync(userData));
+       console.log(response)
+      if (response?.type === "auth/setUpProfile/fulfilled") {
+        // Display success toast
+        toast.success("Profile SetUp successfully!");
+        // Reset the form values
+        reset();
+        // Redirect to securitypage
+        // navigate("/securitypage");
+      } else {
+        // Display error toast with backend error message
+        toast.error(`Please try again. ${response?.error?.message}`);
+      }
     } catch (error) {
       // Handle other errors
       toast.error(`An error occurred. Please try again. ${error.message}`);
@@ -68,7 +94,7 @@ const Sidebar = () => {
   };
   return (
     <Layout>
-      <form  onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
           <Grid
             container
@@ -114,7 +140,7 @@ const Sidebar = () => {
                     accept="image/*"
                     id="file-input"
                     style={{ display: "none" }}
-                    // onChange={handleFileChange}
+                    onChange={handleFileChange}
                   />
                   <label htmlFor="file-input">
                     <CardMedia
@@ -132,6 +158,8 @@ const Sidebar = () => {
                             objectFit: "cover",
                             width: "100%",
                             height: "100%",
+                            maxWidth: "200px", // Adjust the maximum width as needed
+                            maxHeight: "200px", // Adjust the maximum height as needed
                           }}
                         />
                       ) : (
@@ -162,7 +190,8 @@ const Sidebar = () => {
                 </Grid>
               </Grid>
               <Divider />
-              <Box component="form" noValidate sx={{ mt: 3 }}>
+
+              <Box noValidate sx={{ mt: 3 }}>
                 <Grid
                   container
                   spacing={5}
@@ -170,15 +199,13 @@ const Sidebar = () => {
                 >
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      name="name"
-                      // value={inputvalue.name}
-                      // onChange={Handleinput}
-                      type="Name"
+                      type="text"
                       size="large"
+                      defaultValue={userInfo?.firstName}
+                      {...register("firstName", { required: true })}
                       label="First Name"
-                      placeholder="NAFEES"
+                      placeholder="First Name"
                       InputProps={{
                         startAdornment: (
                           <PermIdentityIcon sx={Editstyle.Iconstyle} />
@@ -189,18 +216,21 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.firstName?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        First name is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      type="Name"
+                      type="text"
                       size="large"
-                      name="lname"
-                      // value={inputvalue.lname}
-                      // onChange={Handleinput}
+                      defaultValue={userInfo?.lastName}
+                      {...register("lastName", { required: true })}
                       label="Last Name*"
-                      placeholder="Nafees"
+                      placeholder="Last Name"
                       InputProps={{
                         startAdornment: (
                           <PermIdentityIcon sx={Editstyle.Iconstyle} />
@@ -211,6 +241,11 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.lastName?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Last name is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -223,15 +258,14 @@ const Sidebar = () => {
                 >
                   <Grid item lg={12} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
                       type="email"
                       size="large"
                       name="email"
-                      // value={inputvalue.email}
-                      // onChange={Handleinput}
                       label="Email Address*"
-                      placeholder="nafeesurrehman5566@gmail.com"
+                      defaultValue={userInfo?.email}
+                      {...register("email", { required: true })}
+                      placeholder="example@gmail.com"
                       InputProps={{
                         startAdornment: (
                           <MailOutlineIcon sx={Editstyle.Iconstyle} />
@@ -242,6 +276,11 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.email?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Email is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -254,14 +293,12 @@ const Sidebar = () => {
                 >
                   <Grid item lg={12} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      type="Phone"
+                      type="number"
                       size="large"
                       name="phonenumber"
-                      // value={inputvalue.phonenumber}
-                      // onChange={Handleinput}
                       label="Phone No*"
+                      {...register("phoneNumber", { required: true })}
                       placeholder="+1 3493 3894 43"
                       InputProps={{
                         startAdornment: (
@@ -273,6 +310,11 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.phoneNumber?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        PhoneNumber is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
 
@@ -286,11 +328,9 @@ const Sidebar = () => {
                 >
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
                       name="country"
-                      // value={inputvalue.country}
-                      // onChange={Handleinput}
+                      {...register("country", { required: true })}
                       type="Country"
                       size="large"
                       label="Country"
@@ -302,15 +342,18 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.country?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Country is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
                       name="city"
-                      // value={inputvalue.city}f
-                      // onChange={Handleinput}
-                      type="city"
+                      {...register("city", { required: true })}
+                      type="text"
                       size="large"
                       label="City"
                       placeholder="Bucharest"
@@ -321,6 +364,11 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.city?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        City is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -333,11 +381,9 @@ const Sidebar = () => {
                 >
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      name="zipcode"
-                      // value={inputvalue.zipcode}
-                      // onChange={Handleinput}
+                      name="zipCode"
+                      {...register("zipCode", { required: true })}
                       size="large"
                       label="Zip Code"
                       placeholder="46564"
@@ -348,14 +394,16 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.zipCode?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        ZipCode is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      name="state"
-                      // value={inputvalue.state}
-                      // onChange={Handleinput}
+                      {...register("state", { required: true })}
                       type="text"
                       size="large"
                       label="State*"
@@ -370,6 +418,11 @@ const Sidebar = () => {
                         },
                       }}
                     />
+                    {errors.state?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        State is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -382,14 +435,11 @@ const Sidebar = () => {
                 >
                   <Grid item lg={12} md={12} xs={12} sm={12}>
                     <TextField
-                      required
                       fullWidth
-                      name="streetAddress"
-                      // value={inputvalue.streetAddress}
-                      // onChange={Handleinput}
                       type="text"
                       size="large"
                       label="Street  Address*"
+                      {...register("streetAddress", { required: true })}
                       placeholder="2715 Ash Dr. San Jose, South Dakota 83475"
                       InputProps={{
                         startAdornment: (
@@ -401,6 +451,11 @@ const Sidebar = () => {
                         style: Editstyle.myLabel,
                       }}
                     />
+                    {errors.streetAddress?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        StreetAddress is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -454,13 +509,10 @@ const Sidebar = () => {
                   }}
                 >
                   <TextField
-                    required
                     fullWidth
-                    name="shippingAddress"
-                    // value={inputvalue.shippingAddress}
-                    // onChange={Handleinput}
                     type="text"
                     size="large"
+                    {...register("shippingAddress")}
                     label="Shipping Address*"
                     placeholder="2715 Ash Dr. San Jose, South Dakota 83475"
                     InputLabelProps={{
@@ -498,6 +550,7 @@ const Sidebar = () => {
               </Box>
             </Grid>
           </Grid>
+          <ToastContainer/> 
         </Box>
       </form>
     </Layout>
