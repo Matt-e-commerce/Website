@@ -2,7 +2,11 @@
 import axios from 'axios';
 // const url link
 const POST_URL = "https://e-commerce-qubi.vercel.app";
-
+// Function to get the authorization token from local storage
+const getAuthToken = () => {
+  // Retrieve the token from local storage
+  return localStorage.getItem('token');
+};
 export const signIn = async (userData) => {
   try {
     const response = await axios.post(`${POST_URL}/api/auth/user/login`, userData);
@@ -60,10 +64,18 @@ export const resendOtp = async (userData) => {
 export const getUser = async (id) => {
   
   try {
-    const response = await axios.get(`${POST_URL}/api/auth/user/getUserById/${id}`);
+    const authToken = getAuthToken().replace(/"/g, ''); 
+    const response = await axios.get(
+      `${POST_URL}/api/auth/user/getUserById`,
+      {
+        headers: {
+          Authorization: `${authToken}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error;
   }
 };
 export const profileSetup = async (userData) => {

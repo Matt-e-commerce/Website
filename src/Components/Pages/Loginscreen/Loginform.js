@@ -53,6 +53,7 @@ const Login = () => {
       const response = await dispatch(signInAsync(data))
       if (response?.type === "auth/signIn/fulfilled") {
         // Display success toast
+        localStorage.setItem("token", JSON.stringify(response.payload.token));
         toast.success("Signin successfully!");
         reset()
         navigate('/home')
