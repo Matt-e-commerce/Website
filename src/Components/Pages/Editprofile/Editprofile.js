@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -23,7 +23,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import { profileSetupAsync,getUserAsync } from "../../../redux/Slices/authSlice";
+import {
+  profileSetupAsync,
+  getUserAsync,
+} from "../../../redux/Slices/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import Layout from "../../Layout/Layout";
 
@@ -51,10 +54,11 @@ const Sidebar = () => {
     };
     fetchData();
   }, [dispatch, setValue]);
-const handleFileChange = (event) => {
-  const file = event.target.files[0];
-  setSelectedFile(file);
-};
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file, "file===> ");
+    setSelectedFile(file);
+  };
 
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -64,31 +68,33 @@ const handleFileChange = (event) => {
     md: 4, // Spacing for medium screens
   };
   const onSubmit = async (data) => {
-    console.log(data,"data in on submit")
-    // try {
-    //   const response = await dispatch(profileSetupAsync(data));
-      
-    //   if (response?.type === "auth/setUpProfile/fulfilled") {
-    //     // Display success toast
-    //     toast.success("Profile SetUp successfully!");
-    //      // Reset the form values
-    //     reset()
-    //     // Redirect to securitypage
-    //     // navigate("/securitypage");
-    //   } else {
-    //     // Display error toast with backend error message
-    //     toast.error(
-    //       `Please try again. ${response?.error?.message}`
-    //     );
-    //   }
-    // } catch (error) {
-    //   // Handle other errors
-    //   toast.error(`An error occurred. Please try again. ${error.message}`);
-    // }
+    console.log(selectedFile, "selectedFile===> in the on submit");
+    const userData = {
+      ...data,
+      profilePic: selectedFile,
+    };
+    try {
+      const response = await dispatch(profileSetupAsync(userData));
+       console.log(response)
+      if (response?.type === "auth/setUpProfile/fulfilled") {
+        // Display success toast
+        toast.success("Profile SetUp successfully!");
+        // Reset the form values
+        reset();
+        // Redirect to securitypage
+        // navigate("/securitypage");
+      } else {
+        // Display error toast with backend error message
+        toast.error(`Please try again. ${response?.error?.message}`);
+      }
+    } catch (error) {
+      // Handle other errors
+      toast.error(`An error occurred. Please try again. ${error.message}`);
+    }
   };
   return (
     <Layout>
-      <form  onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
           <Grid
             container
@@ -138,7 +144,6 @@ const handleFileChange = (event) => {
                   />
                   <label htmlFor="file-input">
                     <CardMedia
-                       
                       component="div"
                       sx={{
                         position: "relative",
@@ -153,6 +158,8 @@ const handleFileChange = (event) => {
                             objectFit: "cover",
                             width: "100%",
                             height: "100%",
+                            maxWidth: "200px", // Adjust the maximum width as needed
+                            maxHeight: "200px", // Adjust the maximum height as needed
                           }}
                         />
                       ) : (
@@ -183,7 +190,7 @@ const handleFileChange = (event) => {
                 </Grid>
               </Grid>
               <Divider />
-              
+
               <Box noValidate sx={{ mt: 3 }}>
                 <Grid
                   container
@@ -210,10 +217,10 @@ const handleFileChange = (event) => {
                       }}
                     />
                     {errors.firstName?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    First name is required
-                  </p>
-                )}
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        First name is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
@@ -234,11 +241,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                      {errors.lastName?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    Last name is required
-                  </p>
-                )}
+                    {errors.lastName?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Last name is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -269,11 +276,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                         {errors.email?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    Email is required
-                  </p>
-                )}
+                    {errors.email?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Email is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -303,11 +310,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                        {errors.phoneNumber?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    PhoneNumber is required
-                  </p>
-                )}
+                    {errors.phoneNumber?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        PhoneNumber is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
 
@@ -335,11 +342,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                         {errors.country?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    Country is required
-                  </p>
-                )}
+                    {errors.country?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        Country is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
@@ -357,11 +364,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                     {errors.city?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    City is required
-                  </p>
-                )}
+                    {errors.city?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        City is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -387,11 +394,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                     {errors.zipCode?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    ZipCode is required
-                  </p>
-                )}
+                    {errors.zipCode?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        ZipCode is required
+                      </p>
+                    )}
                   </Grid>
                   <Grid item lg={6} md={12} xs={12} sm={12}>
                     <TextField
@@ -411,11 +418,11 @@ const handleFileChange = (event) => {
                         },
                       }}
                     />
-                      {errors.state?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    State is required
-                  </p>
-                )}
+                    {errors.state?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        State is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -432,7 +439,7 @@ const handleFileChange = (event) => {
                       type="text"
                       size="large"
                       label="Street  Address*"
-                        {...register("streetAddress", { required: true })}
+                      {...register("streetAddress", { required: true })}
                       placeholder="2715 Ash Dr. San Jose, South Dakota 83475"
                       InputProps={{
                         startAdornment: (
@@ -444,11 +451,11 @@ const handleFileChange = (event) => {
                         style: Editstyle.myLabel,
                       }}
                     />
-                        {errors.streetAddress?.type === "required" && (
-                  <p role="alert" style={{ color: "#F7941D" }}>
-                    StreetAddress is required
-                  </p>
-                )}
+                    {errors.streetAddress?.type === "required" && (
+                      <p role="alert" style={{ color: "#F7941D" }}>
+                        StreetAddress is required
+                      </p>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -503,9 +510,9 @@ const handleFileChange = (event) => {
                 >
                   <TextField
                     fullWidth
-                   type="text"
+                    type="text"
                     size="large"
-                     {...register("shippingAddress")}
+                    {...register("shippingAddress")}
                     label="Shipping Address*"
                     placeholder="2715 Ash Dr. San Jose, South Dakota 83475"
                     InputLabelProps={{
@@ -543,6 +550,7 @@ const handleFileChange = (event) => {
               </Box>
             </Grid>
           </Grid>
+          <ToastContainer/> 
         </Box>
       </form>
     </Layout>
