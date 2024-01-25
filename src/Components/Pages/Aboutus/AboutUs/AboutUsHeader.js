@@ -17,7 +17,6 @@ const About = () => {
                 tested  over   the years.
               </Typography>
               <Button>Free Consultation</Button>
-      
           </Grid>
         </Grid>
       </Grid>

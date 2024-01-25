@@ -8,10 +8,10 @@ import Layout from '../../Layout/Layout'
 const AboutPage = () => {
   return (
     <Layout>
-   <AboutUsHeader/> 
-        <WhyUs/> 
-   <HowWeWork/>
-    <TrustedPartners/> 
+      <AboutUsHeader />
+      <WhyUs />
+      <HowWeWork />
+      <TrustedPartners />
     </Layout>
   )
 }
