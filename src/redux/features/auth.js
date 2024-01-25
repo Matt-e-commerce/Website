@@ -57,3 +57,21 @@ export const resendOtp = async (userData) => {
     throw error.response.data;
   }
 };
+export const getUser = async (id) => {
+  
+  try {
+    const response = await axios.get(`${POST_URL}/api/auth/user/getUserById/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+export const profileSetup = async (userData) => {
+  
+  try {
+    const response = await axios.put(`${POST_URL}/api/auth/user/profile/setup`,userData);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
