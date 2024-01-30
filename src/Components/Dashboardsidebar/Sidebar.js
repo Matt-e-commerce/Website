@@ -19,7 +19,6 @@ import Redwatch from "../../Components/images/dashboardprofile.png";
 export default function PermanentDrawerLeft({ children }) {
   const dispatch=useDispatch() 
   const [userInfo, setUserInfo] = useState({}); 
-  console.log(userInfo,"userInfo")
   const location = useLocation();
   const [isClicked, setIsClicked] = useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
