@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Redwatch from "../../Components/images/dashboardprofile.png";
-
+import {StyledList} from "./SideBarStyle"
 export default function PermanentDrawerLeft({ children }) {
   const dispatch=useDispatch() 
   const [userInfo, setUserInfo] = useState({}); 
@@ -29,27 +29,6 @@ export default function PermanentDrawerLeft({ children }) {
     };
     fetchData();
   }, [dispatch]);
-  const StyledList = styled(List)`
-  && .Mui-selected,
-
-  && .Mui-selected:hover {
-    background-color: transparent;
-       color:#F7941D;
-       border-left: 8px solid #F7941D;
-    & .MuiListItemIcon-root,
-    & .MuiTypography-root {
-      color: #F7941D; // Set the text color to white when selected
-      font-weight: 700;
-
-
-    }
-
-    @media (max-width: 600px) {
-      width: 100%; // Change width to 50% for screens with a maximum width of 600px (extra small screens)
-    },
-
-  }
-`;
   const CustomListItem = ({ to, primary }) => (
     <ListItem
       button
