@@ -130,3 +130,18 @@ export const profileSetup = async (userDataFromSubmission) => {
     throw error.response.data;
   }
 };
+export const changePassword = async (userData) => {
+  try {
+    const authToken = getAuthToken().replace(/"/g, "");
+    const response = await axios.post(`${POST_URL}/api/auth/user/userChangepassword`,
+    userData,
+    {
+      headers: {
+        Authorization: `${authToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
