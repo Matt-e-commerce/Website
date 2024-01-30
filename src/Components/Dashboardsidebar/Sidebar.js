@@ -109,10 +109,10 @@ export default function PermanentDrawerLeft({ children }) {
             to="/Editprofile"
             primary={<Typography>Edit Profile</Typography>}
           />
-          <CustomListItem
+          {/* <CustomListItem
             to="/orderhistory"
             primary={<Typography>Order History</Typography>}
-          />
+          /> */}
           <CustomListItem
             to="/Changepassword"
             primary={<Typography>Change Password</Typography>}
