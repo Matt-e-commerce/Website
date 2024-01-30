@@ -17,6 +17,7 @@ import { useForm, Controller } from "react-hook-form";
 import { changePasswordAsync } from "../../../redux/Slices/authSlice";
 import Layout from "../../Layout/Layout";
 import { ToastContainer, toast } from "react-toastify";
+
 const Changepassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,148 +31,88 @@ const Changepassword = () => {
     register,
     handleSubmit,
     watch,
-    reset, // Destructure the reset function from react-hook-for
+    reset,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => {
     try {
       const response = await dispatch(changePasswordAsync(data));
       if (response?.type === "auth/changePass/fulfilled") {
-        // Display success toast
         toast.success("Change Password successfully!");
-         // Reset the form values
-        reset()
-        // Redirect to securitypage
-        // navigate("/login");
+        reset();
+        //navigate it towards the login page after the fill the form
+        navigate("/login")
       } else {
-        // Display error toast with backend error message
         toast.error(
           `ChangePassword failed. Please try again. ${response?.error?.message}`
         );
       }
     } catch (error) {
-      // Handle other errors
       toast.error(`An error occurred. Please try again. ${error.message}`);
     }
   };
+
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Layout>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box>
-            <Grid
-              container
-              sx={{
-                marginTop: { md: "50px", sm: "40px", xs: "20px" },
-                paddingX: { md: "30px", sm: "20px", xs: "10px" },
-              }}
-            >
+            <Grid container sx={{ marginTop: "50px", paddingX: "30px" }}>
               <Grid item lg={3} md={12} sm={12} xs={11}>
                 <Leftsidebar />
               </Grid>
               <Grid item lg={9} md={12} sm={12} xs={11}>
-                <Grid
-                  container
-                  sx={{ paddingX: { md: "55px", sm: "30px", xs: "20px" } }}
-                >
+                <Grid container sx={{ paddingX: "55px" }}>
                   <Grid item lg={8} md={12} sm={12} xs={12}>
                     <Card
                       sx={{
                         backgroundColor: "white",
-                        padding: { md: "20px", sm: "40px", xs: "0px" },
+                        padding: "20px",
                         boxShadow: "0px 0px 0px 0px",
                         border: "1px solid #D5D5D5",
                         borderRadius: "12px",
-                        padding: { md: "0px", sm: "20px", xs: "10px" },
                       }}
                     >
                       <Grid container>
-                        <Grid
-                          item
-                          md={10}
-                          sm={12}
-                          xs={12}
-                          sx={{ margin: "auto" }}
-                        >
-                          <Typography
-                            variant="subtitle1"
-                            sx={{
-                              fontWeight: "600",
-                              lineHeight: {
-                                md: "40.12px",
-                                sm: "50px",
-                                xs: "40px",
-                              },
-                              fontSize: { md: "40px", sm: "30px", xs: "20px" },
-                              textAlign: {
-                                md: "start",
-                                sm: "start",
-                                xs: "center",
-                              },
-                            }}
-                          >
+                        <Grid item md={10} sm={12} xs={12} sx={{ margin: "auto" }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: "600", lineHeight: "40px", fontSize: "40px", textAlign: "start" }}>
                             Change Password
                           </Typography>
-                          <Typography
-                            variant="subtitle1"
-                            sx={{
-                              lineHeight: {
-                                md: "71.12px",
-                                sm: "30px",
-                                xs: "30px",
-                              },
-                              textAlign: {
-                                md: "start",
-                                sm: "start",
-                                xs: "center",
-                              },
-                            }}
-                          >
-                            To Change password please input the details.
+                          <Typography variant="subtitle1" sx={{ lineHeight: "30px", textAlign: "start" }}>
+                            To change the password, please input the details.
                           </Typography>
                           <TextField
                             fullWidth
                             {...register("currentPassword", {
-                              required: "currentPassword is required",
+                              required: "Current Password is required",
                               pattern: {
-                                value:
-                                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-                                message:
-                                  "currentPassword must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                                message: "Current Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
                               },
                             })}
                             type={showPassword ? "text" : "password"}
                             size="large"
-                            label="currentPassword"
-                            placeholder="currentPassword"
-                            sx={{
-                              marginTop: { md: "0", sm: "30px", xs: "20px" },
-                            }}
+                            label="Current Password"
+                            placeholder="Enter Current Password"
+                            sx={{ marginTop: "20px", marginBottom: "10px" }}  // Adjusted the margin
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
-                                  <LockIcon
-                                    sx={{ color: "#757575", fontSize: "18px" }}
-                                  />
+                                  <LockIcon sx={{ color: "#757575", fontSize: "18px" }} />
                                 </InputAdornment>
                               ),
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <IconButton
-                                    onClick={togglePasswordVisibility}
-                                    edge="end"
-                                  >
+                                  <IconButton onClick={togglePasswordVisibility} edge="end">
                                     {watch("currentPassword") ? (
-                                      <VisibilityOffIcon
-                                        sx={{ color: "#757575" }}
-                                      />
+                                      <VisibilityOffIcon sx={{ color: "#757575" }} />
                                     ) : (
-                                      <VisibilityIcon
-                                        sx={{ color: "#757575" }}
-                                      />
+                                      <VisibilityIcon sx={{ color: "#757575" }} />
                                     )}
                                   </IconButton>
                                 </InputAdornment>
@@ -184,45 +125,33 @@ const Changepassword = () => {
                             </p>
                           )}
                           <br />
-                          <br />
                           <TextField
                             fullWidth
                             {...register("newPassword", {
-                              required: "newPassword is required",
+                              required: "New Password is required",
                               pattern: {
-                                value:
-                                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-                                message:
-                                  "newPassword must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                                message: "New Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character",
                               },
                             })}
                             type={showPassword ? "text" : "password"}
                             size="large"
-                            label="newPassword"
-                            placeholder="newPassword"
+                            label="New Password"
+                            placeholder="Enter New Password"
+                            sx={{ marginTop: "20px", marginBottom: "10px" }}  // Adjusted the margin
                             InputProps={{
                               startAdornment: (
                                 <InputAdornment position="start">
-                                  <LockIcon
-                                    sx={{ color: "#757575", fontSize: "18px" }}
-                                  />
+                                  <LockIcon sx={{ color: "#757575", fontSize: "18px" }} />
                                 </InputAdornment>
                               ),
-
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <IconButton
-                                    onClick={togglePasswordVisibility}
-                                    edge="end"
-                                  >
+                                  <IconButton onClick={togglePasswordVisibility} edge="end">
                                     {watch("newPassword") ? (
-                                      <VisibilityOffIcon
-                                        sx={{ color: "#757575" }}
-                                      />
+                                      <VisibilityOffIcon sx={{ color: "#757575" }} />
                                     ) : (
-                                      <VisibilityIcon
-                                        sx={{ color: "#757575" }}
-                                      />
+                                      <VisibilityIcon sx={{ color: "#757575" }} />
                                     )}
                                   </IconButton>
                                 </InputAdornment>
@@ -236,34 +165,24 @@ const Changepassword = () => {
                           )}
                           <br />
                           <br />
-                          <br />
                         </Grid>
                       </Grid>
                       <br />
-
-                      <Grid container spacing={spacing} justifyContent="center">
+                      <Grid container justifyContent="center">
                         <Grid item md={10} sm={12} xs={12}>
-                            <Button
-                              type="submit"
-                              variant="contained"
-                              color="primary"
-                              fullWidth
-                              sx={{
-                                boxShadow: "0px 0px 0px 0px",
-                                paddingX: "25px",
-                                borderRadius: "12px",
-                                paddingY: { md: "10px", sm: "8px", xs: "5px" },
-                                fontSize: {
-                                  md: "18px",
-                                  sm: "15px",
-                                  xs: "15px",
-                                },
-                                textTransform: "lowercase",
-                                color: "white",
-                              }}
-                            >
-                              Update Password
-                            </Button>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            sx={{
+                              boxShadow: "0px 0px 0px 0px",
+                              borderRadius: "12px",
+                              marginTop: "20px",
+                            }}
+                          >
+                            Update Password
+                          </Button>
                         </Grid>
                       </Grid>
                     </Card>

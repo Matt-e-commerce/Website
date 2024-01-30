@@ -48,7 +48,7 @@ const Sidebar = () => {
       setUserInfo(user?.payload);
 
       // Set default values for the form fields
-      Object.keys(user?.payload).forEach((key) => {
+      Object?.keys(user?.payload)?.forEach((key) => {
         setValue(key, user?.payload[key]);
       });
     };
@@ -152,7 +152,7 @@ const Sidebar = () => {
                       {/* Main image */}
                       {selectedFile ? (
                         <img
-                          src={URL.createObjectURL(selectedFile)}
+                          src={URL?.createObjectURL(selectedFile)}
                           alt="Selected Image"
                           style={{
                             objectFit: "cover",

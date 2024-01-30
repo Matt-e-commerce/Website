@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserAsync } from "../../redux/Slices/authSlice";
 import {
   Box,
   Divider,
@@ -15,9 +17,19 @@ import CardMedia from "@mui/material/CardMedia";
 import Redwatch from "../../Components/images/dashboardprofile.png";
 
 export default function PermanentDrawerLeft({ children }) {
+  const dispatch=useDispatch() 
+  const [userInfo, setUserInfo] = useState({}); 
+  console.log(userInfo,"userInfo")
   const location = useLocation();
   const [isClicked, setIsClicked] = useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await dispatch(getUserAsync());
+      setUserInfo(user?.payload);
+    };
+    fetchData();
+  }, [dispatch]);
   const StyledList = styled(List)`
   && .Mui-selected,
 
@@ -87,7 +99,7 @@ export default function PermanentDrawerLeft({ children }) {
                 fontSize: { md: "14px", sm: "13px", xs: "10px" },
                 fontWeight: "600",
               }}>
-              NAFEES UR REHMAN
+              {userInfo?.firstName}   {userInfo?.lastName }
             </Typography>
           </Stack>
           <Divider />
