@@ -69,14 +69,14 @@ const About = () => {
     fetchData();
   }, [dispatch, currentPage]);
   const [categoryFilters, setCategoryFilters] = useState({
-    category: [],
+    categoryIds: [],
   });
   const [inputValues, setInputValues] = useState({
-    from: "",
-    to: "",
+    priceMin : "",
+    priceMax: "",
   });
   const [brandValues, setBrandValues] = useState({
-    brand: [],
+    brandIds: [],
   });
   const [discountValues, setDiscountValues] = useState({
     discount: [],
@@ -150,20 +150,20 @@ const About = () => {
   const handleClearFilter = () => {
     // Clear all filters
     setCategoryFilters({
-      category: [],
+      categoryIds: [],
     });
 
     setInputValues({
-      from: "",
-      to: "",
+      priceMin : "",
+      priceMax: "",
     });
 
     setBrandValues({
-      brand: [],
+      brandIds: [],
     });
 
     setDiscountValues({
-      discount: [],
+      discount: "",
     });
   };
   return (
@@ -200,7 +200,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Laptop & Mac"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Laptop & Mac"
                             )}
                             onChange={(e) =>
@@ -225,7 +225,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Mobile & Tablet"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Mobile & Tablet"
                             )}
                             onChange={(e) =>
@@ -252,7 +252,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="HOME DEVICES"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "HOME DEVICES"
                             )}
                             onChange={(e) =>
@@ -281,7 +281,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Fitness"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Fitness"
                             )}
                             onChange={(e) =>
@@ -309,7 +309,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Games & Toys"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Games & Toys"
                             )}
                             onChange={(e) =>
@@ -336,7 +336,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="TV & Audio"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "TV & Audio"
                             )}
                             onChange={(e) =>
@@ -364,7 +364,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Accessories"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Accessories"
                             )}
                             onChange={(e) =>
@@ -392,7 +392,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Security"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Security"
                             )}
                             onChange={(e) =>
@@ -426,9 +426,9 @@ const About = () => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        value={inputValues.from}
+                        value={inputValues.priceMin }
                         onChange={(e) =>
-                          handleInputChange("from", e.target.value)
+                          handleInputChange("priceMin ", e.target.value)
                         }
                         label="From"
                       />
@@ -436,9 +436,9 @@ const About = () => {
                       <br />
                       <TextField
                         id="filled-basic"
-                        value={inputValues.to}
+                        value={inputValues.priceMax}
                         onChange={(e) =>
-                          handleInputChange("to", e.target.value)
+                          handleInputChange("priceMax", e.target.value)
                         }
                         label="To"
                       />
@@ -461,7 +461,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Apple"
-                            checked={brandValues.brand.includes("Apple")}
+                            checked={brandValues.brandIds.includes("Apple")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -486,7 +486,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Samsung"
-                            checked={brandValues.brand.includes("Samsung")}
+                            checked={brandValues.brandIds.includes("Samsung")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -511,7 +511,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Sony"
-                            checked={brandValues.brand.includes("Sony")}
+                            checked={brandValues.brandIds.includes("Sony")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -537,7 +537,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Oppo"
-                            checked={brandValues.brand.includes("Oppo")}
+                            checked={brandValues.brandIds.includes("Oppo")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
