@@ -1,17 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { GET } from "../../API/axios";
 
-export const FetchProducts = createAsyncThunk('FetchProducts', async (currentPage) => {
-    try {
-       
-        const response = await GET(`product/getAllProductsUser?pageNumber=${currentPage}&limit=12`);
-        console.log(response);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-});
-
+import {FetchProducts} from "../features/product"
 const ProductSlice = createSlice({
     name: "Product",
     initialState: {
@@ -28,18 +18,17 @@ const ProductSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(FetchProducts.fulfilled, (state, action) => {
-                state.loading = false;
-                state.products = action.payload.data.Product;
-                state.totalProducts = action.payload.data.totalProducts;
-                // state=true;
-            })
-            .addCase(FetchProducts.pending, (state, action) => {
-                state.loading = true;
-            })
-            .addCase(FetchProducts.rejected, (state, action) => {
-                state.loading = false;
-            });
+        .addCase(FetchProducts.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(FetchProducts.fulfilled, (state, action) => {
+            state.loading = false;
+            state.products = action.payload;
+          })
+          .addCase(FetchProducts.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload || "An error occurred";
+          })
     },
 });
 
