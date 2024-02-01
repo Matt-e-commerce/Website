@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { GET } from "../../API/axios";
 
-import {FetchProducts} from "../features/product"
+import {FetchProducts,getSingleProduct} from "../features/product"
 const ProductSlice = createSlice({
     name: "Product",
     initialState: {
@@ -26,6 +26,17 @@ const ProductSlice = createSlice({
             state.products = action.payload;
           })
           .addCase(FetchProducts.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload || "An error occurred";
+          })
+          .addCase(getSingleProduct.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getSingleProduct.fulfilled, (state, action) => {
+            state.loading = false;
+            state.products = action.payload;
+          })
+          .addCase(getSingleProduct.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload || "An error occurred";
           })

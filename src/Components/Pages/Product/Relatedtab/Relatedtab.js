@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import Tabestyle from "../../../Tabcom/Tabcomp.style";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useNavigate } from 'react-router-dom';
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useDispatch, useSelector } from "react-redux";
 function TabPanel(props) {
@@ -50,6 +51,7 @@ function a11yProps(index) {
 const YourComponent = () => {
   const [currentSlides, setCurrentSlides] = useState([]);
   const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
   const   products  = useSelector(
     (state) => state?.products?.products?.data?.Product
   );
@@ -197,7 +199,7 @@ const YourComponent = () => {
                   </IconButton>
                 </Grid>
                 <Grid item xs={8}  sx={{ height: '200px' }}>
-                  <Link to='/singleproduct'>
+                  <Link to={`/singleproduct/${item._id}`}  >
                     <img
                       src={item.images[currentSlides[index]]}
                       style={{ height: '100%', width: '100%', objectFit: 'cover' }}
@@ -222,17 +224,17 @@ const YourComponent = () => {
           <Grid container spacing={2} sx={{ padding: '10px' }}>
             <Grid item xs={6} sx={{ display: 'flex' }}>
               <Typography variant="subtitle2" sx={{ color: '#1D1E1E', fontWeight: 'bold' }}>
-                {item.name}
+                {item?.name}
               </Typography>
             </Grid>
             <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Typography variant="h6" sx={{ color: '#F7941D' }}>
-                ${item.price}
+                ${item?.price}
               </Typography>
             </Grid>
           </Grid>
           <Typography sx={{ textAlign: 'center', fontSize: '12px', color: '#7F7F7F', padding: '8px' }}>
-              {item.description}
+              {item?.description}
           </Typography>
           <br />
         </Card>

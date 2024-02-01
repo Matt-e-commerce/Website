@@ -36,7 +36,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<Contactpage />} />
             <Route path="/product" element={<Productpage />} />
-            <Route path="/singleproduct" element={<Singleproduct />} />
+            <Route path="/singleproduct/:_id" element={<Singleproduct />} />
 
             {/* private routes start from here*/}
             <Route

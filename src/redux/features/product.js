@@ -48,7 +48,7 @@ export const getSingleProduct = createAsyncThunk("getSingleProduct", async (id) 
   try {
     const authToken = getAuthToken().replace(/"/g, ''); 
     const response = await axios.get(
-      `${POST_URL}/api/Product/findProductById/${id}`,
+      `${POST_URL}/api/user/product/findProductUserById/${id}`,
       {
         headers: {
           Authorization: `${authToken}`,
