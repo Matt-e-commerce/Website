@@ -67,22 +67,7 @@ const About = () => {
       position: "relative",
       overflowAnchor: "none",
     };
-    useEffect(() => {
-      const fetchData = async () => {
-        const productData={
-          currentPage:currentPage,
-          categoryIds:brandValues,
-          brandIds:categoryFilters
-        }
-        try {
-          await dispatch(FetchProducts(productData));
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
 
-      fetchData();
-    }, [dispatch, currentPage]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -186,6 +171,24 @@ const About = () => {
     console.log("Brand:", brandValues); // Use BrandValues instead of brandValues
     console.log("Selected discount:", discountValues);
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const productData={
+        currentPage:currentPage,
+        categoryIds:categoryFilters,
+        brandIds:brandValues
+
+      }
+      try {
+        await dispatch(FetchProducts(productData));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch,categoryFilters,brandValues]);
+
   const handleClearFilter = () => {
     // Clear all filters
     setCategoryFilters({
