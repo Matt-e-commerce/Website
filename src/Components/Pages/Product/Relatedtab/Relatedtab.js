@@ -198,11 +198,11 @@ const YourComponent = () => {
                     <KeyboardArrowLeftIcon />
                   </IconButton>
                 </Grid>
-                <Grid item xs={8}  sx={{ height: '200px' }}>
+                <Grid item xs={8}  >
                   <Link to={`/singleproduct/${item._id}`}  >
                     <img
                       src={item.images[currentSlides[index]]}
-                      style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                      style={{ height: '200px', width: '100%', objectFit: 'cover' }}
                     />
                   </Link>
                 </Grid>
@@ -223,7 +223,7 @@ const YourComponent = () => {
           </Box>
           <Grid container spacing={2} sx={{ padding: '10px' }}>
             <Grid item xs={6} sx={{ display: 'flex' }}>
-              <Typography variant="subtitle2" sx={{ color: '#1D1E1E', fontWeight: 'bold' }}>
+              <Typography variant="subtitle2" sx={{ color: '#1D1E1E', fontWeight: 'bold', whiteSpace: 'nowrap', width: '50px', overflow: 'hidden',textOverflow: 'ellipsis'  }}>
                 {item?.name}
               </Typography>
             </Grid>
@@ -233,7 +233,7 @@ const YourComponent = () => {
               </Typography>
             </Grid>
           </Grid>
-          <Typography sx={{ textAlign: 'center', fontSize: '12px', color: '#7F7F7F', padding: '8px' }}>
+          <Typography sx={{ textAlign: 'center', fontSize: '12px', color: '#7F7F7F', padding: '8px',whiteSpace: 'nowrap', width: '180px', overflow: 'hidden',textOverflow: 'ellipsis' }}>
               {item?.description}
           </Typography>
           <br />
