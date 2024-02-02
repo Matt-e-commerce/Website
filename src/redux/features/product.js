@@ -31,7 +31,8 @@ export const FetchProducts = createAsyncThunk("showProduct", async (currentPage)
     // const response = await axios.get(
     //   `${POST_URL}/api/Product/getAllProducts?pageNumber=${pageNumber}&limit=${limit}`
     // );
-    const response = await axios.get(`${POST_URL}/product/getAllProductsUser?pageNumber=${currentPage}&limit=12`,
+    // const response = await axios.get(`${POST_URL}/product/getAllProductsUser?pageNumber=${currentPage}&limit=12`,
+    const response = await axios.get(`${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5`,
     {
       headers: {
         Authorization: `${authToken}`,
@@ -47,7 +48,7 @@ export const getSingleProduct = createAsyncThunk("getSingleProduct", async (id) 
   try {
     const authToken = getAuthToken().replace(/"/g, ''); 
     const response = await axios.get(
-      `${POST_URL}/api/Product/findProductById/${id}`,
+      `${POST_URL}/api/user/product/findProductUserById/${id}`,
       {
         headers: {
           Authorization: `${authToken}`,
