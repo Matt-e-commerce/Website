@@ -26,18 +26,19 @@ export const createProduct = createAsyncThunk("createProduct", async (data) => {
 // read Product
 export const FetchProducts = createAsyncThunk("showProduct", async (currentPage) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, ''); 
+    // const authToken = getAuthToken().replace(/"/g, ''); 
     // const { pageNumber, limit } = data;  // Destructure data object to get pageNumber and limit
     // const response = await axios.get(
     //   `${POST_URL}/api/Product/getAllProducts?pageNumber=${pageNumber}&limit=${limit}`
     // );
     // const response = await axios.get(`${POST_URL}/product/getAllProductsUser?pageNumber=${currentPage}&limit=12`,
     const response = await axios.get(`${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5`,
-    {
-      headers: {
-        Authorization: `${authToken}`,
-      },
-    });
+    // {
+    //   headers: {
+    //     Authorization: `${authToken}`,
+    //   },
+    // }
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -46,14 +47,14 @@ export const FetchProducts = createAsyncThunk("showProduct", async (currentPage)
 // delete Product
 export const getSingleProduct = createAsyncThunk("getSingleProduct", async (id) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, ''); 
+    // const authToken = getAuthToken().replace(/"/g, ''); 
     const response = await axios.get(
       `${POST_URL}/api/user/product/findProductUserById/${id}`,
-      {
-        headers: {
-          Authorization: `${authToken}`,
-        },
-      }
+      // {
+      //   headers: {
+      //     Authorization: `${authToken}`,
+      //   },
+      // }
     );
     return response.data;
   } catch (error) {
