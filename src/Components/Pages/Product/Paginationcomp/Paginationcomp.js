@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { UpdateCurrentPage } from '../../../../redux/Slices/ProductSlice';
 
 const Paginationcomp = () => {
-  const { loading, totalProducts, currentPage } = useSelector(state => state.products);
+  const { loading, totalProducts, currentPage } = useSelector(state => state?.products);
   const dispatch = useDispatch();
   const ProductPerPage = 12;
 

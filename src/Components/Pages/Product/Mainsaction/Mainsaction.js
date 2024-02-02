@@ -15,7 +15,7 @@ import Featuredcategories2 from "../../../Featuredcategory/Featuredcategory";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Callsupport from "../../../Callsupport/Callsupport";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchProducts } from "../../../../redux/Slices/ProductSlice";
+import { FetchProducts } from "../../../../redux/features/product";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import Modal from "@mui/material/Modal";
@@ -34,10 +34,7 @@ const style = {
   overflow: "auto",
 };
 const About = () => {
-  const { loading, products, currentPage } = useSelector(
-    (state) => state.products
-  );
-  console.log(products, "products");
+  const {loading,currentPage}=useSelector((state)=>state?.products)
   const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -61,17 +58,25 @@ const About = () => {
     overflowAnchor: "none",
   };
   useEffect(() => {
-    dispatch(FetchProducts(currentPage));
-  }, [currentPage]);
+    const fetchData = async () => {
+      try {
+        await dispatch(FetchProducts(currentPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, currentPage]);
   const [categoryFilters, setCategoryFilters] = useState({
-    category: [],
+    categoryIds: [],
   });
   const [inputValues, setInputValues] = useState({
-    from: "",
-    to: "",
+    priceMin : "",
+    priceMax: "",
   });
   const [brandValues, setBrandValues] = useState({
-    brand: [],
+    brandIds: [],
   });
   const [discountValues, setDiscountValues] = useState({
     discount: [],
@@ -88,13 +93,13 @@ const About = () => {
         // If checked, add the label to the category array
         return {
           ...prevCategoryFilters,
-          category: [...prevCategoryFilters.category, name],
+          categoryIds: [...prevCategoryFilters.categoryIds, name],
         };
       } else {
         // If unchecked, remove the label from the category array
         return {
           ...prevCategoryFilters,
-          category: prevCategoryFilters.category.filter(
+          categoryIds: prevCategoryFilters.categoryIds.filter(
             (item) => item !== name
           ),
         };
@@ -124,13 +129,13 @@ const About = () => {
         // If checked, add the brand to the array
         return {
           ...prevBrandValues,
-          brand: [...prevBrandValues.brand, name],
+          brandIds: [...prevBrandValues.brandIds, name],
         };
       } else {
         // If unchecked, remove the brand from the array
         return {
           ...prevBrandValues,
-          brand: prevBrandValues.brand.filter((item) => item !== name),
+          brandIds: prevBrandValues.brandIds.filter((item) => item !== name),
         };
       }
     });
@@ -145,20 +150,20 @@ const About = () => {
   const handleClearFilter = () => {
     // Clear all filters
     setCategoryFilters({
-      category: [],
+      categoryIds: [],
     });
 
     setInputValues({
-      from: "",
-      to: "",
+      priceMin : "",
+      priceMax: "",
     });
 
     setBrandValues({
-      brand: [],
+      brandIds: [],
     });
 
     setDiscountValues({
-      discount: [],
+      discount: "",
     });
   };
   return (
@@ -195,7 +200,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Laptop & Mac"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Laptop & Mac"
                             )}
                             onChange={(e) =>
@@ -220,7 +225,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Mobile & Tablet"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Mobile & Tablet"
                             )}
                             onChange={(e) =>
@@ -247,7 +252,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="HOME DEVICES"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "HOME DEVICES"
                             )}
                             onChange={(e) =>
@@ -276,7 +281,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Fitness"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Fitness"
                             )}
                             onChange={(e) =>
@@ -304,7 +309,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Games & Toys"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Games & Toys"
                             )}
                             onChange={(e) =>
@@ -331,7 +336,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="TV & Audio"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "TV & Audio"
                             )}
                             onChange={(e) =>
@@ -359,7 +364,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Accessories"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Accessories"
                             )}
                             onChange={(e) =>
@@ -387,7 +392,7 @@ const About = () => {
                             value="allowExtraEmails"
                             color="primary"
                             name="Security"
-                            checked={categoryFilters.category.includes(
+                            checked={categoryFilters.categoryIds.includes(
                               "Security"
                             )}
                             onChange={(e) =>
@@ -421,9 +426,9 @@ const About = () => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        value={inputValues.from}
+                        value={inputValues.priceMin }
                         onChange={(e) =>
-                          handleInputChange("from", e.target.value)
+                          handleInputChange("priceMin ", e.target.value)
                         }
                         label="From"
                       />
@@ -431,9 +436,9 @@ const About = () => {
                       <br />
                       <TextField
                         id="filled-basic"
-                        value={inputValues.to}
+                        value={inputValues.priceMax}
                         onChange={(e) =>
-                          handleInputChange("to", e.target.value)
+                          handleInputChange("priceMax", e.target.value)
                         }
                         label="To"
                       />
@@ -456,7 +461,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Apple"
-                            checked={brandValues.brand.includes("Apple")}
+                            checked={brandValues.brandIds.includes("Apple")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -481,7 +486,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Samsung"
-                            checked={brandValues.brand.includes("Samsung")}
+                            checked={brandValues.brandIds.includes("Samsung")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -506,7 +511,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Sony"
-                            checked={brandValues.brand.includes("Sony")}
+                            checked={brandValues.brandIds.includes("Sony")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -532,7 +537,7 @@ const About = () => {
                           <Checkbox
                             color="primary"
                             name="Oppo"
-                            checked={brandValues.brand.includes("Oppo")}
+                            checked={brandValues.brandIds.includes("Oppo")}
                             onChange={(e) =>
                               handleBrandCheckboxChange(
                                 e.target.name,
@@ -1166,7 +1171,7 @@ const About = () => {
             </Grid>
           ) : (
             <>
-              <Relatedtab products={products} />
+              <Relatedtab  />
             </>
           )}
           <Paginationcomp />

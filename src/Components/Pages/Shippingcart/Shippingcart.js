@@ -26,7 +26,7 @@ import Layout from "../../Layout/Layout";
 
 const Shippingcart = () => {
   const cartProducts=useSelector(state=>state.cart.itemList);
-  
+   console.log(cartProducts,"in the cart we are")
   const theme = createTheme({
     components: {
       MuiTabs: {
@@ -188,9 +188,9 @@ const Shippingcart = () => {
                 </TableHead>
                 <TableBody>
                   {cartProducts.map((row, index) => (
-                    <StyledTableRow key={row.name}>
-                      <StyledTableCell>{row.name}</StyledTableCell>
-                      <StyledTableCell>{'Store'}</StyledTableCell>
+                    <StyledTableRow key={row?.name}>
+                      <StyledTableCell>{row?.name}</StyledTableCell>
+                      <StyledTableCell>{row?.store}</StyledTableCell>
                       <StyledTableCell>
                         <Box>
                           <Grid
@@ -217,7 +217,7 @@ const Shippingcart = () => {
                                   fontWeight: "bold",
                                 }}>
                                 {/* {updateDisplay(index)} */}
-                                {row.quantity}
+                                {row?.quantity}
                               </Typography>
                             </Card>
                             <Divider orientation="vertical" flexItem />

@@ -1,6 +1,6 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { signIn, signUp } from "../features/auth";
+import { signIn, signUp,forgetPassword ,updatePassword,verify,resendOtp,getUser,profileSetup,changePassword} from "../features/auth";
 
 export const signUpAsync = createAsyncThunk("auth/signUp", async (userData) => {
     const response = await signUp(userData);
@@ -9,6 +9,34 @@ export const signUpAsync = createAsyncThunk("auth/signUp", async (userData) => {
   
   export const signInAsync = createAsyncThunk("auth/signIn", async (userData) => {
     const response = await signIn(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const forgetPasswordAsync = createAsyncThunk("auth/forgetPassword", async (userData) => {
+    const response = await forgetPassword(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const updatePasswordAsync = createAsyncThunk("auth/updatePassword", async (userData) => {
+    const response = await updatePassword(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const verifyAsync = createAsyncThunk("auth/verify", async (userData) => {
+    const response = await verify(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const resendOtpAsync = createAsyncThunk("auth/resendOtp", async (userData) => {
+    const response = await resendOtp(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const getUserAsync = createAsyncThunk("auth/getUser", async (userData) => {
+    const response = await getUser(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const profileSetupAsync = createAsyncThunk("auth/setUpProfile", async (userData) => {
+    const response = await profileSetup(userData);
+    return response.data; // Assuming your API returns data
+  });
+  export const changePasswordAsync = createAsyncThunk("auth/changePass", async (userData) => {
+    const response = await changePassword(userData);
     return response.data; // Assuming your API returns data
   });
 // Create a slice of the Redux store
@@ -53,6 +81,17 @@ const authSlice = createSlice({
         state.userInfo = action.payload;
       })
       .addCase(signInAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(forgetPasswordAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(forgetPasswordAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userInfo = action.payload;
+      })
+      .addCase(forgetPasswordAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

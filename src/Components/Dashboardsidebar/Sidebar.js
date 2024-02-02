@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserAsync } from "../../redux/Slices/authSlice";
 import {
   Box,
   Divider,
@@ -13,32 +15,20 @@ import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Redwatch from "../../Components/images/dashboardprofile.png";
-
+import {StyledList} from "./SideBarStyle"
 export default function PermanentDrawerLeft({ children }) {
+  const dispatch=useDispatch() 
+  const [userInfo, setUserInfo] = useState({}); 
   const location = useLocation();
   const [isClicked, setIsClicked] = useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const StyledList = styled(List)`
-  && .Mui-selected,
-
-  && .Mui-selected:hover {
-    background-color: transparent;
-       color:#F7941D;
-       border-left: 8px solid #F7941D;
-    & .MuiListItemIcon-root,
-    & .MuiTypography-root {
-      color: #F7941D; // Set the text color to white when selected
-      font-weight: 700;
-
-
-    }
-
-    @media (max-width: 600px) {
-      width: 100%; // Change width to 50% for screens with a maximum width of 600px (extra small screens)
-    },
-
-  }
-`;
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = await dispatch(getUserAsync());
+      setUserInfo(user?.payload);
+    };
+    fetchData();
+  }, [dispatch]);
   const CustomListItem = ({ to, primary }) => (
     <ListItem
       button
@@ -87,7 +77,7 @@ export default function PermanentDrawerLeft({ children }) {
                 fontSize: { md: "14px", sm: "13px", xs: "10px" },
                 fontWeight: "600",
               }}>
-              NAFEES UR REHMAN
+              {userInfo?.firstName}   {userInfo?.lastName }
             </Typography>
           </Stack>
           <Divider />
@@ -109,10 +99,10 @@ export default function PermanentDrawerLeft({ children }) {
             to="/Editprofile"
             primary={<Typography>Edit Profile</Typography>}
           />
-          <CustomListItem
+          {/* <CustomListItem
             to="/orderhistory"
             primary={<Typography>Order History</Typography>}
-          />
+          /> */}
           <CustomListItem
             to="/Changepassword"
             primary={<Typography>Change Password</Typography>}

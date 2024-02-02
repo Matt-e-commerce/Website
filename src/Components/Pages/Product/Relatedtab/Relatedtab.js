@@ -11,12 +11,13 @@ import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import Tabestyle from "../../../Tabcom/Tabcomp.style";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useNavigate } from 'react-router-dom';
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
+import { useDispatch, useSelector } from "react-redux";
 function TabPanel(props) {
- 
+   
   const {  children, value, index, ...other } = props;
-
+    
   return (
     <div
       role="tabpanel"
@@ -47,10 +48,13 @@ function a11yProps(index) {
   };
 }
 
-const YourComponent = ({products}) => {
-
+const YourComponent = () => {
   const [currentSlides, setCurrentSlides] = useState([]);
   const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
+  const   products  = useSelector(
+    (state) => state?.products?.products?.data?.Product
+  );
   
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -88,7 +92,7 @@ const YourComponent = ({products}) => {
     },
   });
   useEffect(()=>{
-    setCurrentSlides([...Array(products.length).fill(0)])
+    setCurrentSlides([...Array(products?.length).fill(0)])
   },[products])
 
   return (
@@ -178,63 +182,71 @@ const YourComponent = ({products}) => {
     </Grid>
   </Grid>
     <Grid container spacing={3} sx={{ paddingX: { md: '40px', sm: '20px', xs: '10px' } }}>
-      {
-        
-        products.map((item, index) => (
-        <Grid item lg={3} md={6} xs={12} sm={6} key={index}>
-          <br/>
-          <Card >
-            <Grid container alignItems="center" justifyContent="center">
-              <Grid item xs={12}>
-                <Grid container alignItems="center" justifyContent="center">
-                  <Grid item xs={2}>
-                    <IconButton
-                      onClick={() => handlePreviousSlide(index)}
-                    >
-                      <KeyboardArrowLeftIcon />
-                    </IconButton>
-                  </Grid>
-                  <Grid item xs={8}  sx={{ height: '200px' }}>
-                    <Link to='/singleproduct'>
-                      <img
-                        src={item.images[currentSlides[index]]}
-                      />
-                    </Link>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <IconButton
-                      onClick={() => handleNextSlide(index)}
-                    >
-                      <ChevronRightIcon />
-                    </IconButton>
-                  </Grid>
+    {
+  products?.length > 0 ? (
+    products.map((item, index) => (
+      <Grid item lg={3} md={6} xs={12} sm={6} key={index}>
+        <br/>
+        <Card >
+          <Grid container alignItems="center" justifyContent="center">
+            <Grid item xs={12}>
+              <Grid container alignItems="center" justifyContent="center">
+                <Grid item xs={2}>
+                  <IconButton
+                    onClick={() => handlePreviousSlide(index)}
+                  >
+                    <KeyboardArrowLeftIcon />
+                  </IconButton>
+                </Grid>
+                <Grid item xs={8}  sx={{ height: '200px' }}>
+                  <Link to={`/singleproduct/${item._id}`}  >
+                    <img
+                      src={item.images[currentSlides[index]]}
+                      style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                    />
+                  </Link>
+                </Grid>
+                <Grid item xs={2}>
+                  <IconButton
+                    onClick={() => handleNextSlide(index)}
+                  >
+                    <ChevronRightIcon />
+                  </IconButton>
                 </Grid>
               </Grid>
             </Grid>
-            <Box display="flex">
-              <Divider flexItem sx={{ marginRight: '16px', flexGrow: 1 }} />
-              
-              <Divider flexItem sx={{ marginLeft: '16px', flexGrow: 1 }} />
-            </Box>
-            <Grid container spacing={2} sx={{ padding: '10px' }}>
-              <Grid item xs={6} sx={{ display: 'flex' }}>
-                <Typography variant="subtitle2" sx={{ color: '#1D1E1E', fontWeight: 'bold' }}>
-                  {item.name}
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Typography variant="h6" sx={{ color: '#F7941D' }}>
-                  ${item.price}
-                </Typography>
-              </Grid>
+          </Grid>
+          <Box display="flex">
+            <Divider flexItem sx={{ marginRight: '16px', flexGrow: 1 }} />
+            
+            <Divider flexItem sx={{ marginLeft: '16px', flexGrow: 1 }} />
+          </Box>
+          <Grid container spacing={2} sx={{ padding: '10px' }}>
+            <Grid item xs={6} sx={{ display: 'flex' }}>
+              <Typography variant="subtitle2" sx={{ color: '#1D1E1E', fontWeight: 'bold' }}>
+                {item?.name}
+              </Typography>
             </Grid>
-            <Typography sx={{ textAlign: 'center', fontSize: '12px', color: '#7F7F7F', padding: '8px' }}>
-                {item.description}
-            </Typography>
-            <br />
-          </Card>
-        </Grid>
-      ))}
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Typography variant="h6" sx={{ color: '#F7941D' }}>
+                ${item?.price}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Typography sx={{ textAlign: 'center', fontSize: '12px', color: '#7F7F7F', padding: '8px' }}>
+              {item?.description}
+          </Typography>
+          <br />
+        </Card>
+      </Grid>
+    ))
+  ) : (
+    <Typography variant="subtitle1" sx={{ textAlign: 'center', color: '#7F7F7F' }}>
+      No product found yet
+    </Typography>
+  )
+}
+  
     </Grid>
     </Box>
   );

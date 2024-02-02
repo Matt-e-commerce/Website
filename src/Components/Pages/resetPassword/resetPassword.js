@@ -72,7 +72,7 @@ const Forgotpassword = () => {
                         variant="subtitle1"
                         sx={forgotstyle.forgotheading}
                       >
-                        Forget Password
+                        Reset Otp
                       </Typography>
                       <br />
 

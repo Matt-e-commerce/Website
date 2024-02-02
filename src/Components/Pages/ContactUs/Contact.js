@@ -4,41 +4,42 @@ import Box from "@mui/material/Box";
 import { Grid, Button, Typography, Card } from "@mui/material";
 import { TextField } from "@mui/material";
 import Layout from "../../Layout/Layout";
+
 const Contact = () => {
   return (
     <Layout>
-    <Box>
-      <Grid container spacing={2} sx={{ marginTop: "0px" }}>
-        <Grid item xs={12} className="Contact-main">
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              paddingX: { md: "70px", sm: "0px", xs: "20px" },
-              paddingY: { md: "70px", sm: "40px", xs: "30px" },
-            }}
-          >
-            <Grid item md={12} sm={12} xs={12}>
-              <div className="Contact-content">
-                <h1>Contact Us</h1>
-                <Typography>
-                  You offer a good product, make advertising, analyze the market
-                  but <br /> still have no improvement
-                </Typography>
-              </div>
+      <Box>
+        <Grid container spacing={2} style={{ marginTop: "0px" }}>
+          <Grid item xs={12} className="Contact-main">
+            <Grid
+              container
+              spacing={2}
+              style={{
+                paddingX: { md: "70px", sm: "0px", xs: "20px" },
+                paddingY: { md: "70px", sm: "40px", xs: "30px" },
+              }}
+            >
+              <Grid item md={12} sm={12} xs={12}>
+                <div className="Contact-content">
+                  <h1>Contact Us</h1>
+                  <Typography>
+                    You offer a good product, make advertising, analyze the market
+                    but <br /> still have no improvement
+                  </Typography>
+                </div>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid
-        container
-        spacing={4}
-        sx={{
-          marginTop: "20px",
-          paddingX: { md: "70px", sm: "45px", xs: "20px" },
-        }}
-      >
-        <Grid item   lg={3} md={12} sm={12} xs={12}>
+        <Grid
+          container
+          spacing={4}
+          style={{
+            marginTop: "20px",
+            paddingX: { md: "70px", sm: "45px", xs: "20px" },
+          }}
+        >
+         <Grid item   lg={3} md={12} sm={12} xs={12}>
           <Card sx={{ backgroundColor: "#F5F5F5", padding: "30px" }}>
             <Box sx={{ paddingBottom: "50px" }}>
               <Typography
@@ -266,33 +267,31 @@ const Contact = () => {
             Send Message
           </Button>
         </Grid>
-      </Grid>
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          marginTop: { md: "10px", sm: "8px", xs: "8px" },
-        }}
-      >
-        <Grid item lg={12} md={12} xs={12} sm={12}>
-          <Box sx="width: 100%">
-            <iframe
-              width="100%"
-              height="400"
-              frameborder="0"
-              scrolling="no"
-              marginheight="0"
-              marginwidth="0"
-              src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-            >
-              <a href="https://www.maps.ie/population/">
-                Population calculator map
-              </a>
-            </iframe>
-          </Box>
         </Grid>
-      </Grid>
-    </Box>
+        <Grid
+          container
+          spacing={2}
+          style={{
+            marginTop: { md: "10px", sm: "8px", xs: "8px" },
+          }}
+        >
+          <Grid item lg={12} md={12} xs={12} sm={12}>
+            <Box style={{ width: "100%" }}>
+              <iframe
+                width="100%"
+                height="400"
+                frameBorder="0"
+                scrolling="no"
+                marginHeight="0"
+                marginwidth="0"
+                src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+              >
+                <a href="https://www.maps.ie/population/">Population calculator map</a>
+              </iframe>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </Layout>
   );
 };

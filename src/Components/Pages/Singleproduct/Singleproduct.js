@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Singleproduct.css";
 import Grid from "@mui/material/Grid";
 import DescriptionSection from "./Productdescription/DescriptionSection";
@@ -11,9 +11,10 @@ import Box from "@mui/material/Box";
 import pinkimage from "../../images/pinkimage.png";
 import { useParams } from "react-router-dom";
 import productData from "../../data/productsData";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { CartActions } from "../../../redux/Slices/cartSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import  {getSingleProduct}  from "../../../redux/features/product";
 import Layout from "../../Layout/Layout";
 
 
@@ -27,15 +28,13 @@ const data = [
 ];
 const Carousel = () => {
   const { id } = useParams(); 
+  const { _id } = useParams(); 
   const dispatch=useDispatch();
+  const singleProduct=useSelector((state)=>state?.products?.products?.data)
   const handleAddToCart=()=>{
-    dispatch(CartActions.addItem({
-      _id:id,
-      name:"Iphone Mobile",
-      price:1000,
-      quantity:1
-    }));
+    dispatch(CartActions.addItem(singleProduct));
   }
+  const images = singleProduct?.images || []; // Get the array of images from singleProduct
   const [current, setCurrent] = useState(0);
   const slideTo = (index) => {
     setCurrent(index);
@@ -50,10 +49,15 @@ const Carousel = () => {
       setActive(id);
     }
   };
+  useEffect(()=>{
+   const fetchProduct= async()=>{
+    const pro = await dispatch(getSingleProduct(_id))
+   } 
+   fetchProduct()
+  },[dispatch])
   // Extract id from URL parameters
 
   const product = productData.find(e => e.id === id); // Use extracted id
-  console.log(product);
   return (
     <Layout>    
       <Box>
@@ -68,25 +72,16 @@ const Carousel = () => {
         <Grid item lg={5} md={3} sm={12} xs={12}>
           <div className="carouselContent">
             <div className="content">
-              {data.map((v, i) => {
-                return (
-                  i === current &&
-                  (i === 2 ? (
-                    <img src={v.image} key={i} alt=""/>
-                  ) : (
-                    <img src={v.image} key={i} alt=""/>
-                  ))
-                );
-              })}
+            {images.map((image, i) => (
+                  i === current && <img src={image} key={i} alt="" />
+                ))}
             </div>
             <div className="slideContainer">
-              {data.map((v, i) => {
-                return (
+            {images.map((image, i) => (
                   <div className="slideTo" key={i}>
-                    <img src={v.image} alt="" onClick={() => slideTo(i)} />
+                    <img src={image} alt="" onClick={() => slideTo(i)} />
                   </div>
-                );
-              })}
+                ))}
             </div>
           </div>
         </Grid>
@@ -96,7 +91,7 @@ const Carousel = () => {
             variant="h5"
             sx={{ paddingBottom: "10px", fontWeight: "bolder" }}
           >
-            Apple Iphone 13 Pro Max
+            {singleProduct?.modal}
           </Typography>
           <div>
             <Divider />
@@ -112,7 +107,7 @@ const Carousel = () => {
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
                 <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                  13 Pro Max
+                  {singleProduct?.modal}
                 </Typography>
               </Grid>
             </Grid>
@@ -124,8 +119,9 @@ const Carousel = () => {
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
                 <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa{" "}
-                  <br /> qui officia deserunt mollit anim id es
+                 {singleProduct?.description} {" "}
+                 
+                  <br /> 
                 </Typography>
               </Grid>
             </Grid>
@@ -137,7 +133,7 @@ const Carousel = () => {
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
                 <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                  Apple Original
+                {singleProduct?.brand?.brandName}
                 </Typography>
               </Grid>
             </Grid>
@@ -149,7 +145,7 @@ const Carousel = () => {
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
                 <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                  Hype Store
+                {singleProduct?.store}
                 </Typography>
               </Grid>
             </Grid>
@@ -161,7 +157,7 @@ const Carousel = () => {
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
                 <Typography variant="body1" sx={{ fontWeight: "500" }}>
-                  Accessories/Phone
+                {singleProduct?.type?.categoryName}
                 </Typography>
               </Grid>
             </Grid>
@@ -172,7 +168,7 @@ const Carousel = () => {
                 </Typography>
               </Grid>
               <Grid item md={9} sm={12} xs={12}>
-                <Typography variant="body1">In Stock</Typography>
+                <Typography variant="body1"> {singleProduct?.availability}</Typography>
               </Grid>
             </Grid>
             <Grid container spacing={2} sx={{ marginBottom: "8px" }}>
@@ -270,7 +266,7 @@ const Carousel = () => {
         </Grid>
       </Grid>
       <br/>
-    <DescriptionSection />
+    <DescriptionSection   description={singleProduct?.description}/>
       <Featuredcategories />
       <Callsupport />
     </Box>

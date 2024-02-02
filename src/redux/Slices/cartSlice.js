@@ -4,32 +4,47 @@ const cartSlice =createSlice({
     name:"cart",
     initialState:{itemList:[],itemCount:0},
     reducers:{
-        addItem(state,action){
-            const existingProduct=state.itemList.find((existing)=>existing._id===action.payload._id);
-            if(existingProduct){
-                existingProduct.quantity+=1;
-                existingProduct.totalPrice+=existingProduct.price;
-            }else{
-                state.itemList.push(action.payload)
-                state.itemCount+=1;
+        addItem(state, action) {
+            const existingProduct = state.itemList.find((existing) => existing._id === action.payload._id);
+            if (existingProduct) {
+                return {
+                    ...state,
+                    itemList: state.itemList.map((item) =>
+                        item._id === action.payload._id
+                            ? { ...item, quantity: item.quantity + 1, totalPrice: item.totalPrice + item.price }
+                            : item
+                    ),
+                };
+            } else {
+                return {
+                    ...state,
+                    itemList: [...state.itemList, { ...action.payload, quantity: 1, totalPrice: action.payload.price }],
+                    itemCount: state.itemCount + 1,
+                };
             }
         },
-        removeItem(state,action){
-
+        removeItem(state, action) {
+            return {
+                ...state,
+                itemList: state.itemList.filter((item) => item._id !== action.payload),
+                itemCount: state.itemCount - 1,
+            };
         },
-        increment(state,action){
-            const existingProduct=state.itemList.find((existing)=>existing._id===action.payload);
-            if(existingProduct){
-                existingProduct.quantity+=1;
-                existingProduct.totalPrice+=existingProduct.price;
-            }
+        increment(state, action) {
+            return {
+                ...state,
+                itemList: state.itemList.map((item) =>
+                    item._id === action.payload ? { ...item, quantity: item.quantity + 1, totalPrice: item.totalPrice + item.price } : item
+                ),
+            };
         },
-        decrement(state,action){
-            const existingProduct=state.itemList.find((existing)=>existing._id===action.payload);
-            if(existingProduct){
-                existingProduct.quantity-=1;
-                existingProduct.totalPrice-=existingProduct.price;
-            }
+        decrement(state, action) {
+            return {
+                ...state,
+                itemList: state.itemList.map((item) =>
+                    item._id === action.payload ? { ...item, quantity: item.quantity - 1, totalPrice: item.totalPrice - item.price } : item
+                ),
+            };
         },
     }
 });
