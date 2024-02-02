@@ -15,7 +15,11 @@ import Featuredcategories2 from "../../../Featuredcategory/Featuredcategory";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Callsupport from "../../../Callsupport/Callsupport";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchProducts } from "../../../../redux/features/product";
+import {
+  FetchProducts,
+  FetchCategory,
+  FetchBrand,
+} from "../../../../redux/features/product";
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import Modal from "@mui/material/Modal";
@@ -34,33 +38,66 @@ const style = {
   overflow: "auto",
 };
 const About = () => {
-  const {loading,currentPage}=useSelector((state)=>state?.products)
-  const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+    const { loading, currentPage } = useSelector((state) => state?.products);
+    const categories = useSelector(
+      (state) => state?.categories?.products?.data?.Category
+    );
+    const brands = useSelector(
+      (state) => state?.brand?.products?.data?.Brand
+    );
+    const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-  const dispatch = useDispatch();
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpanded((prevExpanded) => {
-      const newExpanded = [...prevExpanded];
-      newExpanded[panel] = isExpanded;
-      return newExpanded;
-    });
-  };
-  const accordionStyle = {
-    backgroundColor: "#fff",
-    color: "rgba(0, 0, 0, 0.87)",
-    borderRadius: "4px",
-    boxShadow: "none", // Remove box shadow
-    border: "none", // Remove border
-    position: "relative",
-    overflowAnchor: "none",
-  };
+    const dispatch = useDispatch();
+    const handleAccordionChange = (panel) => (event, isExpanded) => {
+      setExpanded((prevExpanded) => {
+        const newExpanded = [...prevExpanded];
+        newExpanded[panel] = isExpanded;
+        return newExpanded;
+      });
+    };
+    const accordionStyle = {
+      backgroundColor: "#fff",
+      color: "rgba(0, 0, 0, 0.87)",
+      borderRadius: "4px",
+      boxShadow: "none", // Remove box shadow
+      border: "none", // Remove border
+      position: "relative",
+      overflowAnchor: "none",
+    };
+    useEffect(() => {
+      const fetchData = async () => {
+        const productData={
+          currentPage:currentPage,
+          categoryIds:brandValues,
+          brandIds:categoryFilters
+        }
+        try {
+          await dispatch(FetchProducts(productData));
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchData();
+    }, [dispatch, currentPage]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(FetchProducts(currentPage));
+        await dispatch(FetchCategory(currentPage));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, currentPage]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(FetchBrand(currentPage));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,13 +108,15 @@ const About = () => {
   const [categoryFilters, setCategoryFilters] = useState({
     categoryIds: [],
   });
+  console.log(categoryFilters,"categoryFilters")
   const [inputValues, setInputValues] = useState({
-    priceMin : "",
+    priceMin: "",
     priceMax: "",
   });
   const [brandValues, setBrandValues] = useState({
     brandIds: [],
   });
+  console.log(brandValues,"brandValues")
   const [discountValues, setDiscountValues] = useState({
     discount: [],
   });
@@ -154,7 +193,7 @@ const About = () => {
     });
 
     setInputValues({
-      priceMin : "",
+      priceMin: "",
       priceMax: "",
     });
 
@@ -195,224 +234,37 @@ const About = () => {
                   ),
                   content: (
                     <div>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Laptop & Mac"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Laptop & Mac"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
+                      {categories?.map((category, index) => (
+                        <div key={index}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                color="primary"
+                                name={category._id}
+                                checked={categoryFilters.categoryIds.includes(
+                                  category._id
+                                )}
+                                onChange={(e) =>
+                                  handleCheckboxChange(
+                                    e.target.name,
+                                    e.target.checked
+                                  )
+                                }
+                              />
+                            }
+                            label={
+                              <Typography
+                                variant="caption"
+                                style={{  fontSize: "14px" }}
+                              >
+                                {category.categoryName}
+                              </Typography>
                             }
                           />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            style={{ color: "#F7941D", fontSize: "14px" }}
-                          >
-                            Laptop & Mac
-                          </Typography>
-                        }
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Mobile & Tablet"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Mobile & Tablet"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Mobile & Tablet
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="HOME DEVICES"
-                            checked={categoryFilters.categoryIds.includes(
-                              "HOME DEVICES"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Home Devices
-                          </Typography>
-                        }
-                      />
-
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            value="allowExtraEmails"
-                            color="primary"
-                            name="Fitness"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Fitness"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Fitness
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            value="allowExtraEmails"
-                            color="primary"
-                            name="Games & Toys"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Games & Toys"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Games & Toys
-                          </Typography>
-                        }
-                      />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            value="allowExtraEmails"
-                            color="primary"
-                            name="TV & Audio"
-                            checked={categoryFilters.categoryIds.includes(
-                              "TV & Audio"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            TV & Audio
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            value="allowExtraEmails"
-                            color="primary"
-                            name="Accessories"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Accessories"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Accessories
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            value="allowExtraEmails"
-                            color="primary"
-                            name="Security"
-                            checked={categoryFilters.categoryIds.includes(
-                              "Security"
-                            )}
-                            onChange={(e) =>
-                              handleCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="caption"
-                            sx={{ fontSize: "14px" }}
-                          >
-                            Security
-                          </Typography>
-                        }
-                      />
+                          {/* Add other components or styling as needed */}
+                          <br />
+                        </div>
+                      ))}
                     </div>
                   ),
                 },
@@ -426,7 +278,7 @@ const About = () => {
                     <div>
                       <TextField
                         id="outlined-basic"
-                        value={inputValues.priceMin }
+                        value={inputValues.priceMin}
                         onChange={(e) =>
                           handleInputChange("priceMin ", e.target.value)
                         }
@@ -456,106 +308,37 @@ const About = () => {
                   ),
                   content: (
                     <div>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Apple"
-                            checked={brandValues.brandIds.includes("Apple")}
-                            onChange={(e) =>
-                              handleBrandCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
+                      {brands?.map((brand, index) => (
+                        <div key={index}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                color="primary"
+                                name={brand?._id}
+                                checked={brandValues?.brandIds.includes(
+                                  brand._id
+                                )}
+                                onChange={(e) =>
+                                  handleBrandCheckboxChange(
+                                    e.target.name,
+                                    e.target.checked
+                                  )
+                                }
+                              />
                             }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="body1"
-                            sx={Mainstyle.checkboxsubheading}
-                          >
-                            Apple
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Samsung"
-                            checked={brandValues.brandIds.includes("Samsung")}
-                            onChange={(e) =>
-                              handleBrandCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
+                            label={
+                              <Typography
+                                variant="caption"
+                                style={{  fontSize: "14px" }}
+                              >
+                                {brand?.brandName}
+                              </Typography>
                             }
-                            sx={Mainstyle.checkboxsubheading}
                           />
-                        }
-                        label={
-                          <Typography
-                            variant="body1"
-                            sx={Mainstyle.checkboxsubheading}
-                          >
-                            Samsung
-                          </Typography>
-                        }
-                      />
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Sony"
-                            checked={brandValues.brandIds.includes("Sony")}
-                            onChange={(e) =>
-                              handleBrandCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="body1"
-                            sx={Mainstyle.checkboxsubheading}
-                          >
-                            Sony
-                          </Typography>
-                        }
-                      />
-
-                      <br />
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="primary"
-                            name="Oppo"
-                            checked={brandValues.brandIds.includes("Oppo")}
-                            onChange={(e) =>
-                              handleBrandCheckboxChange(
-                                e.target.name,
-                                e.target.checked
-                              )
-                            }
-                            sx={Mainstyle.checkboxsubheading}
-                          />
-                        }
-                        label={
-                          <Typography
-                            variant="body1"
-                            sx={Mainstyle.checkboxsubheading}
-                          >
-                            Oppo
-                          </Typography>
-                        }
-                      />
+                          {/* Add other components or styling as needed */}
+                          <br />
+                        </div>
+                      ))}
                     </div>
                   ),
                 },
@@ -920,7 +703,7 @@ const About = () => {
                                       variant="body1"
                                       sx={Mainstyle.checkboxsubheading}
                                     >
-                                      Apple
+                                      Apple1
                                     </Typography>
                                   }
                                 />
@@ -937,7 +720,7 @@ const About = () => {
                                       variant="body1"
                                       sx={Mainstyle.checkboxsubheading}
                                     >
-                                      Samsung
+                                      Samsung1
                                     </Typography>
                                   }
                                 />
@@ -1171,7 +954,7 @@ const About = () => {
             </Grid>
           ) : (
             <>
-              <Relatedtab  />
+              <Relatedtab />
             </>
           )}
           <Paginationcomp />
