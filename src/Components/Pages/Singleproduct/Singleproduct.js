@@ -32,12 +32,7 @@ const Carousel = () => {
   const dispatch=useDispatch();
   const singleProduct=useSelector((state)=>state?.products?.products?.data)
   const handleAddToCart=()=>{
-    dispatch(CartActions.addItem({
-      _id:id,
-      name:"Iphone Mobile",
-      price:1000,
-      quantity:1
-    }));
+    dispatch(CartActions.addItem(singleProduct));
   }
   const images = singleProduct?.images || []; // Get the array of images from singleProduct
   const [current, setCurrent] = useState(0);

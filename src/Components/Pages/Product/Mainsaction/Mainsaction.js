@@ -93,13 +93,13 @@ const About = () => {
         // If checked, add the label to the category array
         return {
           ...prevCategoryFilters,
-          category: [...prevCategoryFilters.category, name],
+          categoryIds: [...prevCategoryFilters.categoryIds, name],
         };
       } else {
         // If unchecked, remove the label from the category array
         return {
           ...prevCategoryFilters,
-          category: prevCategoryFilters.category.filter(
+          categoryIds: prevCategoryFilters.categoryIds.filter(
             (item) => item !== name
           ),
         };
@@ -129,13 +129,13 @@ const About = () => {
         // If checked, add the brand to the array
         return {
           ...prevBrandValues,
-          brand: [...prevBrandValues.brand, name],
+          brandIds: [...prevBrandValues.brandIds, name],
         };
       } else {
         // If unchecked, remove the brand from the array
         return {
           ...prevBrandValues,
-          brand: prevBrandValues.brand.filter((item) => item !== name),
+          brandIds: prevBrandValues.brandIds.filter((item) => item !== name),
         };
       }
     });
