@@ -38,7 +38,6 @@ const Signup = () => {
   const onSubmit = async (data) => {
     try {
       const response = await dispatch(signUpAsync(data));
-      
       if (response?.type === "auth/signUp/fulfilled") {
         // Display success toast
         toast.success("Signup successful!");
