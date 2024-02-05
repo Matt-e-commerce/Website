@@ -27,36 +27,54 @@ export const createProduct = createAsyncThunk("createProduct", async (data) => {
 });
 
 // read Product
-// Define the asynchronous thunk to fetch products
 export const FetchProducts = createAsyncThunk(
-  'products/fetch',
+  "showProduct",
   async (productData) => {
     try {
-      const { currentPage, categoryIds, brandIds } = productData;
-
-      // Set default limit
-      const limit = 10;
-
-      // Build the API endpoint based on parameters
-      let endpoint = `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=${limit}`;
-
-      if (categoryIds?.length > 0) {
-        const sortedCategories = categoryIds.join(',');
-        endpoint += `&categoryIds=${sortedCategories}`;
-      } else if (brandIds?.length > 0) {
-        const sortedBrands = brandIds.join(',');
-        endpoint += `&brandIds=${sortedBrands}`;
+      const { currentPage, categoryIds, brandIds, priceMax, priceMin } =
+        productData;
+      console.log(productData, "productData in FetchProducts");
+      const category = categoryIds?.categoryIds;
+      const sortedCategory = category?.join(",");
+      const brand = brandIds?.brandIds;
+      const sortedBrand = brand?.join(",");
+      if (sortedCategory && currentPage) {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&categoryIds=${sortedCategory}`
+        );
+        return response.data;
+      } else if (sortedBrand && currentPage) {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&brandIds=${sortedBrand}`
+        );
+        return response.data;
+      } else if (priceMax) {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMax}`
+        );
+        return response.data;
+      } else if (priceMin) {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMin}`
+        );
+        return response.data;
+      } else if (priceMin && priceMax) {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMin}&priceMin=${priceMin}`
+        );
+        return response.data;
+      } else {
+        const response = await axios.get(
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=10`
+        );
+        return response.data;
       }
-
-      // Make the API request
-      const response = await axios.get(endpoint);
-      return response.data;
     } catch (error) {
-      // Handle errors gracefully
       throw error;
     }
   }
 );
+
 // delete Product
 export const getSingleProduct = createAsyncThunk(
   "getSingleProduct",

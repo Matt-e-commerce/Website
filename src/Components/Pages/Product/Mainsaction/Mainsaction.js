@@ -38,35 +38,33 @@ const style = {
   overflow: "auto",
 };
 const About = () => {
-    const { loading, currentPage } = useSelector((state) => state?.products);
-    const categories = useSelector(
-      (state) => state?.categories?.products?.data?.Category
-    );
-    const brands = useSelector(
-      (state) => state?.brand?.products?.data?.Brand
-    );
-    const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+  const { loading, currentPage } = useSelector((state) => state?.products);
+  const categories = useSelector(
+    (state) => state?.categories?.products?.data?.Category
+  );
+  const brands = useSelector((state) => state?.brand?.products?.data?.Brand);
+  const [expanded, setExpanded] = useState([true, true, true]); // Initialize to true for each Accordion\
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const dispatch = useDispatch();
-    const handleAccordionChange = (panel) => (event, isExpanded) => {
-      setExpanded((prevExpanded) => {
-        const newExpanded = [...prevExpanded];
-        newExpanded[panel] = isExpanded;
-        return newExpanded;
-      });
-    };
-    const accordionStyle = {
-      backgroundColor: "#fff",
-      color: "rgba(0, 0, 0, 0.87)",
-      borderRadius: "4px",
-      boxShadow: "none", // Remove box shadow
-      border: "none", // Remove border
-      position: "relative",
-      overflowAnchor: "none",
-    };
+  const dispatch = useDispatch();
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpanded((prevExpanded) => {
+      const newExpanded = [...prevExpanded];
+      newExpanded[panel] = isExpanded;
+      return newExpanded;
+    });
+  };
+  const accordionStyle = {
+    backgroundColor: "#fff",
+    color: "rgba(0, 0, 0, 0.87)",
+    borderRadius: "4px",
+    boxShadow: "none", // Remove box shadow
+    border: "none", // Remove border
+    position: "relative",
+    overflowAnchor: "none",
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,7 +76,7 @@ const About = () => {
     };
 
     fetchData();
-  }, [dispatch, currentPage]);
+  }, [dispatch]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -93,7 +91,6 @@ const About = () => {
   const [categoryFilters, setCategoryFilters] = useState({
     categoryIds: [],
   });
-  console.log(categoryFilters,"categoryFilters")
   const [inputValues, setInputValues] = useState({
     priceMin: "",
     priceMax: "",
@@ -101,7 +98,6 @@ const About = () => {
   const [brandValues, setBrandValues] = useState({
     brandIds: [],
   });
-  console.log(brandValues,"brandValues")
   const [discountValues, setDiscountValues] = useState({
     discount: [],
   });
@@ -165,20 +161,33 @@ const About = () => {
     });
   };
   const handleApplyFilter = () => {
-    // Log the applied filters to the console
-    console.log("Category Filters:", categoryFilters);
-    console.log("Price Rang:", inputValues);
-    console.log("Brand:", brandValues); // Use BrandValues instead of brandValues
-    console.log("Selected discount:", discountValues);
+    const fetchData = async () => {
+      const productData = {
+        currentPage: currentPage,
+        priceMax:inputValues?.priceMax,
+        priceMin:inputValues?.price
+        
+      };
+      try {
+        await dispatch(FetchProducts(productData));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
   };
   useEffect(() => {
+    handleApplyFilter()
+  }, [ dispatch,inputValues]);
+  useEffect(() => {
     const fetchData = async () => {
-      const productData={
-        currentPage:currentPage,
-        categoryIds:categoryFilters,
-        brandIds:brandValues
-
-      }
+      const productData = {
+        currentPage: currentPage,
+        categoryIds: categoryFilters,
+        brandIds: brandValues,
+        priceMax:inputValues?.priceMax,
+        priceMin:inputValues?.price
+        
+      };
       try {
         await dispatch(FetchProducts(productData));
       } catch (error) {
@@ -187,7 +196,7 @@ const About = () => {
     };
 
     fetchData();
-  }, [dispatch,categoryFilters,brandValues]);
+  }, [dispatch, categoryFilters, brandValues]);
 
   const handleClearFilter = () => {
     // Clear all filters
@@ -258,7 +267,7 @@ const About = () => {
                             label={
                               <Typography
                                 variant="caption"
-                                style={{  fontSize: "14px" }}
+                                style={{ fontSize: "14px" }}
                               >
                                 {category.categoryName}
                               </Typography>
@@ -280,10 +289,11 @@ const About = () => {
                   content: (
                     <div>
                       <TextField
-                        id="outlined-basic"
-                        value={inputValues.priceMin}
+                        id="filled-basic"
+                        value={inputValues?.priceMin}
+                        type="number"
                         onChange={(e) =>
-                          handleInputChange("priceMin ", e.target.value)
+                          handleInputChange("priceMin", e.target.value)
                         }
                         label="From"
                       />
@@ -291,7 +301,8 @@ const About = () => {
                       <br />
                       <TextField
                         id="filled-basic"
-                        value={inputValues.priceMax}
+                        value={inputValues?.priceMax}
+                        type="number"
                         onChange={(e) =>
                           handleInputChange("priceMax", e.target.value)
                         }
@@ -299,7 +310,9 @@ const About = () => {
                       />
                       <br />
                       <br />
-                      <Typography>Price: $0.00 – $3200.00</Typography>
+                      <Typography>
+                      Price: ${inputValues?.priceMin} – ${inputValues?.priceMax}
+                      </Typography>
                     </div>
                   ),
                 },
@@ -332,7 +345,7 @@ const About = () => {
                             label={
                               <Typography
                                 variant="caption"
-                                style={{  fontSize: "14px" }}
+                                style={{ fontSize: "14px" }}
                               >
                                 {brand?.brandName}
                               </Typography>
