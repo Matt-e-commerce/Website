@@ -160,46 +160,49 @@ const About = () => {
       }
     });
   };
-  const handleApplyFilter = () => {
-    const fetchData = async () => {
-      const productData = {
-        currentPage: currentPage,
-        priceMax:inputValues?.priceMax,
-        priceMin:inputValues?.price
-        
-      };
-      try {
-        await dispatch(FetchProducts(productData));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+  const handleApplyFilter = async () => {
+    // const fetchData = async () => {
+    const productData = {
+      currentPage: currentPage,
+      categoryIds: categoryFilters,
+      brandIds: brandValues,
+      priceMax: inputValues?.priceMax,
+      priceMin: inputValues?.price,
     };
+    try {
+      await dispatch(FetchProducts(productData));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    // };
   };
-  useEffect(() => {
-    handleApplyFilter()
-  }, [ dispatch,inputValues]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const productData = {
-        currentPage: currentPage,
-        categoryIds: categoryFilters,
-        brandIds: brandValues,
-        priceMax:inputValues?.priceMax,
-        priceMin:inputValues?.price
-        
-      };
-      try {
-        await dispatch(FetchProducts(productData));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
 
-    fetchData();
-  }, [dispatch, categoryFilters, brandValues]);
+  useEffect(() => {
+    handleApplyFilter();
+    handleClearFilter();
+  }, [dispatch]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const productData = {
+  //       currentPage: currentPage,
+  //       categoryIds: categoryFilters,
+  //       brandIds: brandValues,
+  //       priceMax:inputValues?.priceMax,
+  //       priceMin:inputValues?.price
 
-  const handleClearFilter = () => {
-    // Clear all filters
+  //     };
+  //     try {
+  //       await dispatch(FetchProducts(productData));
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch, categoryFilters, brandValues]);
+
+  const handleClearFilter = async () => {
+    // Clear all filters in matt product
     setCategoryFilters({
       categoryIds: [],
     });
@@ -216,6 +219,16 @@ const About = () => {
     setDiscountValues({
       discount: "",
     });
+
+    // const fetchData = async () => {
+    const productData = {
+      currentPage: currentPage,
+    };
+    try {
+      await dispatch(FetchProducts(productData));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
   return (
     <Box>
@@ -291,6 +304,9 @@ const About = () => {
                       <TextField
                         id="filled-basic"
                         value={inputValues?.priceMin}
+                        inputProps={{
+                          min: 1, // Set the minimum value
+                        }}
                         type="number"
                         onChange={(e) =>
                           handleInputChange("priceMin", e.target.value)
@@ -302,6 +318,9 @@ const About = () => {
                       <TextField
                         id="filled-basic"
                         value={inputValues?.priceMax}
+                        inputProps={{
+                          min: 1, // Set the minimum value
+                        }}
                         type="number"
                         onChange={(e) =>
                           handleInputChange("priceMax", e.target.value)
@@ -311,7 +330,8 @@ const About = () => {
                       <br />
                       <br />
                       <Typography>
-                      Price: ${inputValues?.priceMin} – ${inputValues?.priceMax}
+                        Price: ${inputValues?.priceMin} – $
+                        {inputValues?.priceMax}
                       </Typography>
                     </div>
                   ),
@@ -440,58 +460,58 @@ const About = () => {
                     </div>
                   ),
                 },
-                {
-                  label: (
-                    <Typography sx={{ color: "#3C3737", fontWeight: "600" }}>
-                      Color
-                    </Typography>
-                  ),
+                // {
+                //   label: (
+                //     <Typography sx={{ color: "#3C3737", fontWeight: "600" }}>
+                //       Color
+                //     </Typography>
+                //   ),
 
-                  content: (
-                    <div>
-                      <Grid container spacing={2}>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-1"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-2"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-3"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-4"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-5"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-6"]}></Card>
-                        </Grid>
-                      </Grid>
-                      <Grid container spacing={2} sx={{ marginTop: "2px" }}>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-7"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-8"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-9"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-10"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-11"]}></Card>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Card sx={Mainstyle["card-12"]}></Card>
-                        </Grid>
-                      </Grid>
-                    </div>
-                  ),
-                },
+                //   content: (
+                //     <div>
+                //       <Grid container spacing={2}>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-1"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-2"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-3"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-4"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-5"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-6"]}></Card>
+                //         </Grid>
+                //       </Grid>
+                //       <Grid container spacing={2} sx={{ marginTop: "2px" }}>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-7"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-8"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-9"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-10"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-11"]}></Card>
+                //         </Grid>
+                //         <Grid item xs={2}>
+                //           <Card sx={Mainstyle["card-12"]}></Card>
+                //         </Grid>
+                //       </Grid>
+                //     </div>
+                //   ),
+                // },
               ].map((section, index) => (
                 <Accordion
                   key={index}
@@ -521,7 +541,7 @@ const About = () => {
                   color="primary"
                   size="large"
                   sx={Mainstyle.fliterbutton}
-                  onClick={handleApplyFilter}
+                  onClick={() => handleApplyFilter()}
                   fullWidth
                 >
                   Apply Filter
@@ -533,7 +553,7 @@ const About = () => {
                   color="primary"
                   size="large"
                   sx={Mainstyle.fliterbutton}
-                  onClick={handleClearFilter}
+                  onClick={() => handleClearFilter()}
                   fullWidth
                 >
                   Clear Filter

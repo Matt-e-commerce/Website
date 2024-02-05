@@ -55,6 +55,7 @@ const YourComponent = () => {
   const   products  = useSelector(
     (state) => state?.products?.products?.data?.Product
   );
+  console.log(products,"products")
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

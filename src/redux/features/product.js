@@ -38,6 +38,7 @@ export const FetchProducts = createAsyncThunk(
       const sortedCategory = category?.join(",");
       const brand = brandIds?.brandIds;
       const sortedBrand = brand?.join(",");
+      
       if (sortedCategory && currentPage) {
         const response = await axios.get(
           `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&categoryIds=${sortedCategory}`
@@ -58,12 +59,9 @@ export const FetchProducts = createAsyncThunk(
           `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMin}`
         );
         return response.data;
-      } else if (priceMin && priceMax) {
-        const response = await axios.get(
-          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMin}&priceMin=${priceMin}`
-        );
-        return response.data;
-      } else {
+      } 
+    
+      else {
         const response = await axios.get(
           `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=10`
         );
