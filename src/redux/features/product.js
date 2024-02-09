@@ -1,16 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// const url link
-const POST_URL = "https://e-commerce-qubi.vercel.app";
-// Function to get the authorization token from local storage
-const getAuthToken = () => {
-  // Retrieve the token from local storage
-  return localStorage.getItem("token");
-};
+import {authToken} from "../authToken/token"
+// Get the POST_URL from the .env file
+const POST_URL = process.env.POST_URL || "https://e-commerce-qubi.vercel.app";
+
 // create Product
 export const createProduct = createAsyncThunk("createProduct", async (data) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.post(
       `${POST_URL}/api/Product/createProduct`,
       data,
@@ -56,7 +52,7 @@ export const FetchProducts = createAsyncThunk(
         return response.data;
       } else if (priceMin) {
         const response = await axios.get(
-          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMax=${priceMin}`
+          `${POST_URL}/api/user/product/getAllProductsUser?pageNumber=${currentPage}&limit=5&priceMin=${priceMin}`
         );
         return response.data;
       } 
@@ -78,7 +74,6 @@ export const getSingleProduct = createAsyncThunk(
   "getSingleProduct",
   async (id) => {
     try {
-      // const authToken = getAuthToken().replace(/"/g, '');
       const response = await axios.get(
         `${POST_URL}/api/user/product/findProductUserById/${id}`
         // {
@@ -101,7 +96,6 @@ export const updateProduct = createAsyncThunk("updateProduct", async (data) => {
     ProductName: data.ProductName,
   };
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.post(
       `${POST_URL}/api/Product/updateProduct`,
       ProductData,
@@ -120,7 +114,6 @@ export const updateProduct = createAsyncThunk("updateProduct", async (data) => {
 // delete Product
 export const deleteProduct = createAsyncThunk("deleteProduct", async (id) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.delete(
       `${POST_URL}/api/Product/deleteProduct/${id}`,
       {

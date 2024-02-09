@@ -1,12 +1,10 @@
 // authService.js
 import axios from "axios";
-// const url link
-const POST_URL = "https://e-commerce-qubi.vercel.app";
-// Function to get the authorization token from local storage
-const getAuthToken = () => {
-  // Retrieve the token from local storage
-  return localStorage.getItem("token");
-};
+import {authToken} from "../authToken/token"
+
+// Get the POST_URL from the .env file
+const POST_URL = process.env.POST_URL || "https://e-commerce-qubi.vercel.app";
+
 export const signIn = async (userData) => {
   try {
     const response = await axios.post(
@@ -76,7 +74,6 @@ export const resendOtp = async (userData) => {
 };
 export const getUser = async (id) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.get(`${POST_URL}/api/auth/user/getUserById`, {
       headers: {
         Authorization: `${authToken}`,
@@ -113,7 +110,6 @@ export const profileSetup = async (userDataFromSubmission) => {
     formData.append("profilePic", userDataFromSubmission?.profilePic);
   }
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.put(
       `${POST_URL}/api/auth/user/profile/setup`,
       formData,
@@ -132,7 +128,6 @@ export const profileSetup = async (userDataFromSubmission) => {
 };
 export const changePassword = async (userData) => {
   try {
-    const authToken = getAuthToken().replace(/"/g, "");
     const response = await axios.post(`${POST_URL}/api/auth/user/userChangepassword`,
     userData,
     {

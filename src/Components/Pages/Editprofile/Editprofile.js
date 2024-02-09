@@ -56,7 +56,6 @@ const Sidebar = () => {
   }, [dispatch, setValue]);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file, "file===> ");
     setSelectedFile(file);
   };
 
@@ -68,7 +67,6 @@ const Sidebar = () => {
     md: 4, // Spacing for medium screens
   };
   const onSubmit = async (data) => {
-    console.log(selectedFile, "selectedFile===> in the on submit");
     const userData = {
       ...data,
       profilePic: selectedFile,

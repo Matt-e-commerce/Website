@@ -305,7 +305,7 @@ const About = () => {
                         id="filled-basic"
                         value={inputValues?.priceMin}
                         inputProps={{
-                          min: 1, // Set the minimum value
+                          min: 0, // Set the minimum value
                         }}
                         type="number"
                         onChange={(e) =>
@@ -319,7 +319,7 @@ const About = () => {
                         id="filled-basic"
                         value={inputValues?.priceMax}
                         inputProps={{
-                          min: 1, // Set the minimum value
+                          min: 0, // Set the minimum value
                         }}
                         type="number"
                         onChange={(e) =>
